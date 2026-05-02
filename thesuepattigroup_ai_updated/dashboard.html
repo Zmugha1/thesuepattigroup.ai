@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Sue Patti Group | AgentPulse Intelligence Dashboard</title>
+<style>
+  :root {
+    --navy: #2D3E50; --navy-dark: #1E2E3D;
+    --teal: #3ABFBF; --teal-light: #C8E8E5;
+    --coral: #E8604A; --gold: #F5C842;
+    --cream: #F0EDE8; --slate: #5A6A7A;
+    --border: #DDD8D2; --green: #27AE60;
+    --amber: #E6951A; --red: #C0392B;
+    --light: #F7F5F2; --white: #FFFFFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Calibri, 'Segoe UI', Arial, sans-serif; background: var(--cream); color: #3A3A3A; }
+  h1,h2,h3,h4 { font-family: 'Trebuchet MS', Arial, sans-serif; color: var(--navy); }
+
+  /* Top bar */
+  .topbar { background: var(--navy); color: white; padding: 10px 0; font-size: 13px; }
+  .topbar-inner { max-width: 1280px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+  .topbar a { color: var(--teal-light); text-decoration: none; }
+
+  /* Header */
+  .header { background: var(--navy-dark); color: white; padding: 16px 0; position: sticky; top: 0; z-index: 50; }
+  .header-inner { max-width: 1280px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .brand { font-family: 'Trebuchet MS'; font-weight: bold; font-size: 20px; color: var(--gold); }
+  .brand span { color: var(--teal-light); font-size: 11px; display: block; margin-top: -2px; font-weight: normal; }
+
+  /* Tabs */
+  .tabs { background: var(--navy); padding: 0; overflow-x: auto; }
+  .tabs-inner { max-width: 1280px; margin: 0 auto; padding: 0 20px; display: flex; gap: 0; min-width: max-content; }
+  .tab-btn { background: transparent; color: var(--teal-light); border: none; padding: 14px 18px; font-family: inherit; font-size: 13px; font-weight: bold; cursor: pointer; white-space: nowrap; border-bottom: 3px solid transparent; transition: all 0.15s; }
+  .tab-btn:hover { color: white; background: rgba(255,255,255,0.05); }
+  .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); background: rgba(245,200,66,0.08); }
+  .tab-btn .phase-tag { display: inline-block; background: rgba(255,255,255,0.15); border-radius: 3px; padding: 1px 6px; font-size: 9px; margin-left: 5px; }
+  .tab-btn.p2 .phase-tag { background: var(--amber); color: white; }
+  .tab-btn.p3 .phase-tag { background: var(--coral); color: white; }
+
+  /* Page */
+  .page { max-width: 1280px; margin: 0 auto; padding: 24px 20px 60px; }
+  .page-title-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+  .page-title-bar h1 { font-size: 26px; }
+  .page-tag { background: var(--teal); color: white; border-radius: 4px; padding: 3px 10px; font-size: 11px; font-weight: bold; font-family: 'Trebuchet MS'; }
+  .page-tag.p2 { background: var(--amber); }
+  .page-tag.p3 { background: var(--coral); }
+
+  /* Greeting */
+  .greeting-card {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+    color: white; border-radius: 12px; padding: 24px 28px; margin-bottom: 20px;
+    position: relative; overflow: hidden;
+  }
+  .greeting-card::before { content: ""; position: absolute; top: -40%; right: -10%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(58,191,191,0.25) 0%, transparent 70%); pointer-events: none; }
+  .greeting-card h2 { color: var(--gold); font-size: 24px; margin-bottom: 6px; position: relative; }
+  .greeting-card .date { color: var(--teal-light); font-size: 13px; margin-bottom: 14px; position: relative; }
+  .greeting-card .summary { color: rgba(255,255,255,0.9); font-size: 14px; line-height: 1.7; position: relative; }
+  .greeting-card .summary strong { color: var(--gold); }
+
+  /* Stats row */
+  .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .stat-card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; }
+  .stat-label { font-family: 'Trebuchet MS'; font-size: 10px; font-weight: bold; color: var(--slate); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .stat-value { font-family: 'Trebuchet MS'; font-size: 22px; font-weight: bold; color: var(--navy); line-height: 1.1; }
+  .stat-sub { font-size: 11px; color: var(--slate); margin-top: 2px; }
+  .stat-sub.up { color: var(--green); }
+  .stat-sub.down { color: var(--coral); }
+
+  /* Section header */
+  .section-head { display: flex; align-items: center; gap: 10px; margin: 24px 0 14px; padding-bottom: 10px; border-bottom: 2px solid var(--teal-light); }
+  .section-num { background: var(--teal); color: white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-family: 'Trebuchet MS'; font-weight: bold; font-size: 12px; flex-shrink: 0; }
+  .section-head h3 { font-size: 16px; }
+  .section-head .sub { font-size: 12px; color: var(--slate); margin-left: 4px; }
+
+  /* Card */
+  .card { background: white; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; }
+  .card-header { padding: 12px 16px; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+  .card-header:hover { background: var(--light); }
+  .card-body { padding: 16px; background: var(--cream); border-top: 1px solid var(--border); display: none; }
+  .card.open .card-body { display: block; }
+
+  /* Badge */
+  .badge { display: inline-block; border-radius: 4px; padding: 2px 8px; font-size: 10px; font-weight: bold; font-family: 'Trebuchet MS'; letter-spacing: 0.3px; }
+  .b-hot { background: #D5F5E3; color: var(--green); }
+  .b-warm { background: #FEF3DC; color: var(--amber); }
+  .b-cold { background: var(--teal-light); color: var(--slate); }
+  .b-miss { background: #FADBD8; color: var(--red); }
+  .b-pa { background: #D5F5E3; color: var(--green); }
+  .b-nopa { background: #FADBD8; color: var(--red); }
+  .b-new { background: var(--teal); color: white; }
+
+  /* Score bar */
+  .score-bar { display: flex; align-items: center; gap: 6px; }
+  .score-bar .track { flex: 1; height: 5px; background: var(--light); border-radius: 3px; min-width: 60px; }
+  .score-bar .fill { height: 5px; border-radius: 3px; }
+  .score-bar .num { font-family: 'Trebuchet MS'; font-weight: bold; font-size: 12px; min-width: 18px; text-align: right; }
+
+  /* Lead card */
+  .lead-meta { flex: 1; min-width: 0; }
+  .lead-name { font-family: 'Trebuchet MS'; font-weight: bold; font-size: 14px; color: var(--navy); margin-bottom: 3px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .lead-sub { font-size: 12px; color: var(--slate); }
+  .lead-score { width: 100px; flex-shrink: 0; }
+  .chevron { color: var(--teal); font-size: 12px; }
+
+  /* Email draft */
+  .draft-box { background: white; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 10px; }
+  .draft-label { font-family: 'Trebuchet MS'; font-weight: bold; font-size: 10px; color: var(--navy); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px; }
+  .draft-text { font-size: 13px; color: var(--navy); line-height: 1.6; }
+  .actions { display: flex; gap: 6px; flex-wrap: wrap; }
+  .btn { border: none; border-radius: 6px; padding: 7px 14px; font-family: inherit; font-size: 12px; font-weight: bold; cursor: pointer; }
+  .btn-primary { background: var(--teal); color: white; }
+  .btn-primary:hover { background: var(--navy); }
+  .btn-outline { background: transparent; color: var(--navy); border: 1.5px solid var(--navy) !important; }
+  .btn-danger { background: transparent; color: var(--coral); border: 1.5px solid var(--coral) !important; }
+
+  /* Showing card */
+  .showing { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+  .showing-time { background: var(--navy); color: var(--gold); border-radius: 5px; padding: 3px 10px; font-family: 'Trebuchet MS'; font-weight: bold; font-size: 11px; display: inline-block; }
+  .showing-client { font-family: 'Trebuchet MS'; font-weight: bold; font-size: 14px; color: var(--navy); margin-left: 8px; }
+  .showing-prop { font-family: 'Trebuchet MS'; font-weight: bold; font-size: 13px; color: var(--teal); margin: 6px 0; }
+  .showing-specs { display: flex; gap: 18px; margin: 8px 0; }
+  .showing-specs div { text-align: center; }
+  .showing-specs .v { font-family: 'Trebuchet MS'; font-weight: bold; font-size: 16px; color: var(--navy); }
+  .showing-specs .l { font-size: 10px; color: var(--slate); }
+  .showing-note { background: var(--cream); border-radius: 6px; padding: 8px 12px; font-size: 12px; color: var(--navy); }
+
+  /* Filter pills */
+  .filter-row { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .filter-pill { flex: 1; min-width: 100px; padding: 10px 12px; border-radius: 8px; background: white; border: 2px solid var(--border); text-align: center; cursor: pointer; }
+  .filter-pill.active { border-color: var(--navy); background: var(--cream); }
+  .filter-pill .n { font-family: 'Trebuchet MS'; font-weight: bold; font-size: 20px; color: var(--navy); }
+  .filter-pill .l { font-size: 10px; color: var(--slate); text-transform: uppercase; letter-spacing: 0.3px; font-weight: bold; }
+
+  /* Coming soon (phase 2/3 features) */
+  .coming-soon-card { background: linear-gradient(135deg, var(--gold) 0%, #D4A020 100%); color: var(--navy); border-radius: 12px; padding: 24px 28px; margin-bottom: 16px; }
+  .coming-soon-card h3 { color: var(--navy); margin-bottom: 6px; }
+  .cs-phase3 { background: linear-gradient(135deg, var(--coral) 0%, #C2361A 100%); color: white; }
+  .cs-phase3 h3 { color: white; }
+
+  /* Alert */
+  .alert-bar { background: var(--navy); color: white; border-radius: 10px; padding: 14px 18px; margin-bottom: 16px; display: flex; gap: 12px; align-items: start; }
+  .alert-bar .icon { width: 36px; height: 36px; border-radius: 50%; background: var(--gold); color: var(--navy); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; flex-shrink: 0; }
+  .alert-bar .body h4 { color: var(--gold); margin-bottom: 3px; font-size: 14px; }
+  .alert-bar .body p { font-size: 13px; color: rgba(255,255,255,0.88); line-height: 1.5; }
+
+  /* Progress bar */
+  .progress-card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin-bottom: 12px; }
+  .progress-head { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .progress-head span:first-child { font-family: 'Trebuchet MS'; font-weight: bold; font-size: 12px; color: var(--navy); }
+  .progress-head span:last-child { font-size: 11px; color: var(--slate); }
+  .progress-track { height: 8px; background: var(--light); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 4px; }
+
+  /* Table */
+  .data-table { width: 100%; background: white; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 16px; }
+  .data-table th, .data-table td { padding: 10px 14px; text-align: left; font-size: 12px; border-bottom: 1px solid var(--border); }
+  .data-table th { background: var(--navy); color: white; font-family: 'Trebuchet MS'; font-weight: bold; font-size: 11px; text-transform: uppercase; letter-spacing: 0.4px; }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--light); }
+
+  /* Partner card */
+  .partner-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+  .partner-card { background: white; border: 1px solid var(--border); border-top: 4px solid; border-radius: 10px; padding: 16px; }
+  .partner-card.tj { border-top-color: var(--teal); }
+  .partner-card.lauren { border-top-color: var(--navy); }
+  .partner-card h4 { font-size: 15px; margin-bottom: 2px; }
+  .partner-card .role { font-size: 11px; color: var(--slate); margin-bottom: 10px; }
+  .partner-stats { display: flex; gap: 16px; align-items: center; margin-bottom: 10px; }
+  .partner-stats .num { font-family: 'Trebuchet MS'; font-weight: bold; font-size: 22px; color: var(--teal); }
+  .partner-stats .nlabel { font-size: 10px; color: var(--slate); }
+  .partner-stats .rev { font-family: 'Trebuchet MS'; font-weight: bold; font-size: 14px; color: var(--green); }
+
+  /* New lead pulse */
+  .new-lead-banner { background: var(--green); color: white; border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 12px; display: none; animation: slideIn 0.4s; }
+  .new-lead-banner.show { display: block; }
+  @keyframes slideIn { from { transform: translateY(-10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+  /* Chat transcript */
+  .transcript { background: var(--cream); border-radius: 6px; padding: 12px; margin-bottom: 10px; }
+  .transcript-line { display: flex; gap: 8px; margin-bottom: 6px; font-size: 12px; line-height: 1.4; }
+  .transcript-line .who { font-family: 'Trebuchet MS'; font-weight: bold; min-width: 55px; flex-shrink: 0; }
+  .transcript-line .who.bot { color: var(--teal); }
+  .transcript-line .who.caller { color: var(--navy); }
+
+  /* Hidden by default */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  @media (max-width: 720px) {
+    .page-title-bar h1 { font-size: 22px; }
+    .greeting-card { padding: 18px 20px; }
+    .greeting-card h2 { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <span>← <a href="index.html">Back to Public Website</a></span>
+    <span>Dr. Data Decision Intelligence LLC  |  AgentPulse Dashboard</span>
+  </div>
+</div>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-inner">
+    <div class="brand">AgentPulse<span>The Sue Patti Group  |  Private Dashboard</span></div>
+    <div style="display:flex;gap:12px;align-items:center;font-size:12px;color:var(--teal-light)">
+      <span>● Jason Patti</span>
+      <span style="opacity:0.6">|</span>
+      <span id="clock"></span>
+    </div>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+  <div class="tabs-inner">
+    <button class="tab-btn active" data-tab="morning">Morning Brief <span class="phase-tag">P1</span></button>
+    <button class="tab-btn" data-tab="leads">Lead Intelligence <span class="phase-tag">P1</span></button>
+    <button class="tab-btn" data-tab="clients">Client Intel <span class="phase-tag">P1</span></button>
+    <button class="tab-btn" data-tab="market">Market Intel <span class="phase-tag">P1</span></button>
+    <button class="tab-btn p2" data-tab="sources">Lead Sources <span class="phase-tag">P2</span></button>
+    <button class="tab-btn p2" data-tab="voice">Voice-Trained AI <span class="phase-tag">P2</span></button>
+    <button class="tab-btn p3" data-tab="permits">Seller Signals <span class="phase-tag">P3</span></button>
+    <button class="tab-btn p3" data-tab="phonebot">AI Phone Bot <span class="phase-tag">P3</span></button>
+    <button class="tab-btn p3" data-tab="council">Decision Council <span class="phase-tag">P3</span></button>
+    <button class="tab-btn" data-tab="goals">Business Goals <span class="phase-tag">P1</span></button>
+    <button class="tab-btn" data-tab="partners">Partners (TJ & Lauren) <span class="phase-tag">P1</span></button>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- ===== MORNING BRIEF ===== -->
+<div class="tab-panel active" id="tab-morning">
+  <div class="page-title-bar">
+    <h1>Morning Brief</h1>
+    <span class="page-tag">PHASE 1</span>
+  </div>
+
+  <div class="new-lead-banner" id="newLeadBanner">
+    🎉 <strong>New lead captured from your website!</strong> <span id="newLeadDetail"></span>
+  </div>
+
+  <div class="greeting-card">
+    <h2>Good morning, Jason.</h2>
+    <div class="date" id="greetingDate">Saturday, April 18, 2026  |  Waukesha County Market</div>
+    <div class="summary">
+      You have <strong>3 hot leads</strong> needing attention today, <strong>1 missed call</strong> from last night, and <strong>3 showings</strong> scheduled. Your pipeline is worth <strong>$284K</strong> in potential commission.
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Revenue Goal</div>
+      <div class="stat-value">$63K / $188K</div>
+      <div class="stat-sub up">34% to goal • ahead of pace</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Homes Sold</div>
+      <div class="stat-value">8 / 40</div>
+      <div class="stat-sub">20% to 40-home target</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Pipeline Value</div>
+      <div class="stat-value">$284K</div>
+      <div class="stat-sub up">+$42K this week</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">30-yr Rate</div>
+      <div class="stat-value">6.30%</div>
+      <div class="stat-sub down">↓ 0.07 this week</div>
+    </div>
+  </div>
+
+  <div class="alert-bar">
+    <div class="icon">↓</div>
+    <div class="body">
+      <h4>Rate Drop Trigger Fired</h4>
+      <p>30-yr rate dropped to 6.30%. <strong>3 cold leads</strong> who cited rate concerns have re-engagement emails drafted and waiting your approval in Lead Intelligence.</p>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-num">1</div>
+    <h3>Today's Showings</h3>
+    <span class="sub">Pulled from Google Calendar • Briefs pre-loaded</span>
+  </div>
+
+  <div class="showing">
+    <span class="showing-time">10:00 AM</span>
+    <span class="showing-client">Greg Sorenson</span>
+    <span class="badge b-pa" style="margin-left:8px">PRE-APPROVED</span>
+    <div class="showing-prop">142 Mill Pond Rd, Delafield. $764,900</div>
+    <div class="showing-specs">
+      <div><div class="v">5</div><div class="l">beds</div></div>
+      <div><div class="v">3.5</div><div class="l">baths</div></div>
+      <div><div class="v">3,800</div><div class="l">sqft</div></div>
+      <div><div class="v">1.53</div><div class="l">acres</div></div>
+    </div>
+    <div class="showing-note"><strong>Agent brief:</strong> 163 ft water access on Scuppernong Creek. Seller flexible on closing. Greg toured similar property last week. this is better priced.</div>
+  </div>
+
+  <div class="showing">
+    <span class="showing-time">2:00 PM</span>
+    <span class="showing-client">Jennifer Liu</span>
+    <span class="badge b-pa" style="margin-left:8px">PRE-APPROVED</span>
+    <div class="showing-prop">891 Hillside Dr, Hartland. $589,000</div>
+    <div class="showing-specs">
+      <div><div class="v">4</div><div class="l">beds</div></div>
+      <div><div class="v">3</div><div class="l">baths</div></div>
+      <div><div class="v">2,950</div><div class="l">sqft</div></div>
+    </div>
+    <div class="showing-note"><strong>Agent brief:</strong> Updated kitchen 2022, new roof 2021, HOA $180/mo. Jennifer is moving fast. ready to make an offer today.</div>
+  </div>
+
+  <div class="showing">
+    <span class="showing-time">5:30 PM</span>
+    <span class="showing-client">Maria Kovacs</span>
+    <span class="badge b-pa" style="margin-left:8px">PRE-APPROVED</span>
+    <div class="showing-prop">4410 Lake View Ct, Pewaukee. $445,000</div>
+    <div class="showing-specs">
+      <div><div class="v">3</div><div class="l">beds</div></div>
+      <div><div class="v">2</div><div class="l">baths</div></div>
+      <div><div class="v">2,100</div><div class="l">sqft</div></div>
+    </div>
+    <div class="showing-note"><strong>Agent brief:</strong> Quiet cul-de-sac, top-rated schools. Motivated seller (price dropped $15K 2 weeks ago). Maria wants spring move. timing works.</div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-num">2</div>
+    <h3>Priority Calls Today</h3>
+    <span class="sub">AI-ranked by readiness • Click to see email draft</span>
+  </div>
+
+  <div id="priorityLeads"></div>
+</div>
+
+<!-- ===== LEAD INTELLIGENCE ===== -->
+<div class="tab-panel" id="tab-leads">
+  <div class="page-title-bar">
+    <h1>Lead Intelligence</h1>
+    <span class="page-tag">PHASE 1</span>
+  </div>
+
+  <div class="greeting-card" style="background:linear-gradient(135deg,var(--teal) 0%, var(--navy) 100%)">
+    <h2 style="color:white">Your 750 leads do not have to stay lost.</h2>
+    <div class="summary">Every lead scored, prioritized, and ready to re-engage. Nothing falls through. Nothing gets forgotten.</div>
+  </div>
+
+  <div class="filter-row" id="filterRow"></div>
+  <div id="leadsList"></div>
+</div>
+
+<!-- ===== CLIENT INTEL ===== -->
+<div class="tab-panel" id="tab-clients">
+  <div class="page-title-bar">
+    <h1>Client Intelligence</h1>
+    <span class="page-tag">PHASE 1</span>
+  </div>
+
+  <div class="greeting-card" style="background:var(--navy-dark)">
+    <h2 style="color:var(--gold)">Know every client deeply before every conversation.</h2>
+    <div class="summary">Personality type, readiness, and the exact next action. surfaced before you pick up the phone.</div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-num">1</div>
+    <h3>Active Clients</h3>
+  </div>
+  <div id="clientList"></div>
+
+  <div class="section-head" style="margin-top:28px">
+    <div class="section-num">2</div>
+    <h3>Past Client Relationship Health</h3>
+    <span class="sub">Your referral engine</span>
+  </div>
+
+  <div class="card open">
+    <div class="card-header">
+      <div class="lead-meta">
+        <div class="lead-name">The Henderson Family</div>
+        <div class="lead-sub">Closed Mar 2023 • 380 days since contact</div>
+      </div>
+      <div class="lead-score"><div class="score-bar"><div class="track"><div class="fill" style="width:80%;background:var(--green)"></div></div><div class="num" style="color:var(--green)">8</div></div></div>
+    </div>
+    <div class="card-body" style="background:#FEF3DC">
+      <strong style="color:var(--amber)">Anniversary alert:</strong> 1-year anniversary in 15 days. Send personalized home value update for their neighborhood (Delafield).
+    </div>
+  </div>
+
+  <div class="card open">
+    <div class="card-header">
+      <div class="lead-meta">
+        <div class="lead-name">Mike and Sarah Bauer</div>
+        <div class="lead-sub">Closed Jan 2026 • 90 days since contact</div>
+      </div>
+      <div class="lead-score"><div class="score-bar"><div class="track"><div class="fill" style="width:90%;background:var(--green)"></div></div><div class="num" style="color:var(--green)">9</div></div></div>
+    </div>
+    <div class="card-body" style="background:#FEF3DC">
+      <strong style="color:var(--amber)">Referral opportunity:</strong> Just closed. warm referral window open. Ask for a Google review this week while the experience is fresh.
+    </div>
+  </div>
+
+  <div class="card open">
+    <div class="card-header">
+      <div class="lead-meta">
+        <div class="lead-name">Rachel Kim</div>
+        <div class="lead-sub">Closed Jul 2022 • 650 days since contact</div>
+      </div>
+      <div class="lead-score"><div class="score-bar"><div class="track"><div class="fill" style="width:60%;background:var(--amber)"></div></div><div class="num" style="color:var(--amber)">6</div></div></div>
+    </div>
+    <div class="card-body" style="background:#FEF3DC">
+      <strong style="color:var(--amber)">Market shift alert:</strong> Home values up 8.5% since her close. Great reason to reach out. home may be worth significantly more than she thinks.
+    </div>
+  </div>
+</div>
+
+<!-- ===== MARKET INTEL ===== -->
+<div class="tab-panel" id="tab-market">
+  <div class="page-title-bar">
+    <h1>Market Intelligence</h1>
+    <span class="page-tag">PHASE 1</span>
+  </div>
+
+  <div class="greeting-card" style="background:linear-gradient(135deg,var(--amber) 0%, #A05F0A 100%)">
+    <h2 style="color:white">Stay ahead of your leads.</h2>
+    <div class="summary">Market data pulled weekly from Redfin (free public CSV) and Freddie Mac PMMS (free rate feed). When the market moves, your outreach triggers automatically.</div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-label">30-yr Fixed</div><div class="stat-value">6.30%</div><div class="stat-sub down">↓ 0.07 this week</div></div>
+    <div class="stat-card"><div class="stat-label">Median Price</div><div class="stat-value">$412K</div><div class="stat-sub up">+3.2% YoY</div></div>
+    <div class="stat-card"><div class="stat-label">Days on Market</div><div class="stat-value">18</div><div class="stat-sub up">↓ 4 vs last month</div></div>
+    <div class="stat-card"><div class="stat-label">New Listings</div><div class="stat-value">47</div><div class="stat-sub">This week in target zips</div></div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-num">1</div>
+    <h3>New Listing Alerts for Your Buyers</h3>
+    <span class="sub">Match buyer criteria • Jason approves before alert sends</span>
+  </div>
+
+  <table class="data-table">
+    <tr><th>Buyer</th><th>New Match</th><th>Why It Fits</th><th>Action</th></tr>
+    <tr>
+      <td><strong>Stephanie Walsh</strong></td>
+      <td>4bd Lake Country $590K</td>
+      <td>Matches her criteria exactly. Pre-approved. 2.1 acres.</td>
+      <td><button class="btn btn-primary">Send Alert</button></td>
+    </tr>
+    <tr>
+      <td><strong>Greg Sorenson</strong></td>
+      <td>Waterfront Delafield &lt;$800K</td>
+      <td>New dock property. Fits waterfront requirement.</td>
+      <td><button class="btn btn-primary">Send Alert</button></td>
+    </tr>
+    <tr>
+      <td><strong>Dave & Lynn Trembley</strong></td>
+      <td>3+bd Hartland $580K</td>
+      <td>Two new in Hartland schools district.</td>
+      <td><button class="btn btn-primary">Send Alert</button></td>
+    </tr>
+  </table>
+
+  <div class="section-head">
+    <div class="section-num">2</div>
+    <h3>Market Data by Zip Code</h3>
+    <span class="sub">Live from Redfin weekly CSV</span>
+  </div>
+
+  <table class="data-table">
+    <tr><th>Area</th><th>Median</th><th>DOM</th><th>Active</th><th>YoY Change</th><th>Sale-to-List</th></tr>
+    <tr><td><strong>Delafield (53018)</strong></td><td>$612K</td><td>18 days</td><td>47</td><td style="color:var(--green)">+4.2%</td><td>99.1%</td></tr>
+    <tr><td><strong>Hartland (53029)</strong></td><td>$485K</td><td>16 days</td><td>32</td><td style="color:var(--green)">+3.8%</td><td>100.2%</td></tr>
+    <tr><td><strong>Pewaukee (53072)</strong></td><td>$440K</td><td>14 days</td><td>51</td><td style="color:var(--green)">+5.1%</td><td>101.5%</td></tr>
+    <tr><td><strong>Oconomowoc (53066)</strong></td><td>$425K</td><td>22 days</td><td>68</td><td style="color:var(--green)">+2.9%</td><td>98.4%</td></tr>
+    <tr><td><strong>Lake Country (53058)</strong></td><td>$680K</td><td>28 days</td><td>24</td><td style="color:var(--green)">+6.4%</td><td>97.8%</td></tr>
+  </table>
+</div>
+
+<!-- ===== LEAD SOURCES (P2) ===== -->
+<div class="tab-panel" id="tab-sources">
+  <div class="page-title-bar">
+    <h1>Lead Source Tracking</h1>
+    <span class="page-tag p2">PHASE 2</span>
+  </div>
+
+  <div class="coming-soon-card">
+    <h3>Unlocks in Phase 2. $2,500 build + $150/mo</h3>
+    <p>See exactly which leads came from your own site vs. Zillow vs. chatbot vs. referrals. The ROI picture that tells you where to invest your time and money.</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-label">Own Website</div><div class="stat-value" style="color:var(--green)">18</div><div class="stat-sub up">$0 cost per lead</div></div>
+    <div class="stat-card"><div class="stat-label">Chatbot Captures</div><div class="stat-value" style="color:var(--teal)">12</div><div class="stat-sub up">Exclusive to Jason</div></div>
+    <div class="stat-card"><div class="stat-label">Zillow (Paid)</div><div class="stat-value" style="color:var(--coral)">8</div><div class="stat-sub down">$67 per lead, shared with 3</div></div>
+    <div class="stat-card"><div class="stat-label">Referrals</div><div class="stat-value" style="color:var(--gold)">5</div><div class="stat-sub up">Highest conversion</div></div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-num">1</div>
+    <h3>Conversion by Source (last 90 days)</h3>
+  </div>
+
+  <table class="data-table">
+    <tr><th>Source</th><th>Leads</th><th>Showings</th><th>Closed</th><th>Conversion</th><th>Cost/Lead</th><th>ROI</th></tr>
+    <tr><td><strong>Own Website (Chatbot)</strong></td><td>30</td><td>9</td><td>3</td><td style="color:var(--green)"><strong>10%</strong></td><td style="color:var(--green)">$0</td><td style="color:var(--green)"><strong>∞</strong></td></tr>
+    <tr><td><strong>Own Website (IDX)</strong></td><td>22</td><td>6</td><td>2</td><td style="color:var(--green)"><strong>9%</strong></td><td style="color:var(--green)">$0</td><td style="color:var(--green)"><strong>∞</strong></td></tr>
+    <tr><td><strong>Zillow Premier</strong></td><td>48</td><td>6</td><td>1</td><td style="color:var(--coral)">2.1%</td><td style="color:var(--coral)">$67</td><td style="color:var(--amber)">2.5x</td></tr>
+    <tr><td><strong>Referrals (TJ/Lauren)</strong></td><td>8</td><td>5</td><td>3</td><td style="color:var(--green)"><strong>37.5%</strong></td><td style="color:var(--green)">$0</td><td style="color:var(--green)"><strong>∞</strong></td></tr>
+  </table>
+</div>
+
+<!-- ===== VOICE AI (P2) ===== -->
+<div class="tab-panel" id="tab-voice">
+  <div class="page-title-bar">
+    <h1>Voice-Trained AI Drafts</h1>
+    <span class="page-tag p2">PHASE 2</span>
+  </div>
+
+  <div class="coming-soon-card">
+    <h3>Unlocks in Phase 2. $2,500 build + $150/mo</h3>
+    <p>System trained on 3-5 real emails you have sent. Every follow-up sounds exactly like you. OpenAI API call under $10/month at your volume.</p>
+  </div>
+
+  <div class="section-head">
+    <div class="section-num">1</div>
+    <h3>Voice Training Samples</h3>
+    <span class="sub">The emails you provide teach the system</span>
+  </div>
+
+  <div class="card open">
+    <div class="card-header">
+      <div class="lead-meta">
+        <div class="lead-name">Sample 1. Initial Follow-Up</div>
+        <div class="lead-sub">Sent to Mike Bauer • received a response</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="draft-text" style="font-style:italic;color:var(--slate)">
+        "Hey Mike, Jason here. Great talking with you yesterday. I pulled together a few listings that match what you described. couple of them just hit the market this week. Take a look when you get a minute. Open house this Saturday on the Hartland one if you want to swing by. No pressure, just thought you should see it in person.."
+      </div>
+      <div style="font-size:11px;color:var(--green);margin-top:8px"><strong>✓ Voice signals captured:</strong> casual opener, first name, "pulled together" (not "attached"), no-pressure close, specific property reference</div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-num">2</div>
+    <h3>Generated Draft. Jason's Voice</h3>
+  </div>
+  <div class="draft-box">
+    <div class="draft-label">AI Draft for Greg Sorenson (Hot Lead, Score 9)</div>
+    <div class="draft-text">Hey Greg, Jason here. Still thinking about that waterfront on Mill Pond Rd? Got two more properties that just came up in Delafield with similar water access. one under your budget. Worth a 10-minute call this week. What does Thursday afternoon look like?</div>
+    <div style="font-size:11px;color:var(--teal);margin-top:8px;background:var(--cream);padding:8px;border-radius:4px"><strong>Voice match: 94%.</strong> Uses "Hey" opener, casual tone, references specific property, soft close with time option.</div>
+  </div>
+</div>
+
+<!-- ===== SELLER SIGNALS PHASE 3 ===== -->
+<div class="tab-panel" id="tab-permits">
+  <div class="page-title-bar">
+    <h1>Seller Signal Intelligence</h1>
+    <span class="page-tag p3">PHASE 3</span>
+  </div>
+
+  <div class="coming-soon-card cs-phase3">
+    <h3>Unlocks in Phase 3. $500/month retainer</h3>
+    <p>Public permit records monitored weekly. Homeowners pulling significant renovation permits flagged as seller leads 12-18 months before they list. Nobody else in Waukesha County has this.</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-label">Signals This Month</div><div class="stat-value">34</div><div class="stat-sub">Across 4 counties</div></div>
+    <div class="stat-card"><div class="stat-label">High Priority</div><div class="stat-value" style="color:var(--coral)">7</div><div class="stat-sub">Permit value &gt;$75K</div></div>
+    <div class="stat-card"><div class="stat-label">Price Drops Flagged</div><div class="stat-value" style="color:var(--amber)">12</div><div class="stat-sub">Motivated sellers</div></div>
+    <div class="stat-card"><div class="stat-label">Est. Revenue Value</div><div class="stat-value" style="color:var(--green)">$57K</div><div class="stat-sub">Potential commission</div></div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-num">1</div>
+    <h3>Permit Triggers (Last 7 Days)</h3>
+    <span class="sub">Sourced from Waukesha, Walworth, Dodge, Jefferson county public records</span>
+  </div>
+
+  <table class="data-table">
+    <tr><th>Address</th><th>Permit Type</th><th>Value</th><th>Signal Strength</th><th>Action</th></tr>
+    <tr>
+      <td><strong>N12W30156 High Ridge Rd</strong><br><span style="color:var(--slate);font-size:11px">Delafield</span></td>
+      <td>Kitchen + Bath Remodel</td>
+      <td>$92,000</td>
+      <td><span class="badge b-hot">HIGH</span></td>
+      <td><button class="btn btn-primary">View Lead</button></td>
+    </tr>
+    <tr>
+      <td><strong>W245 N2140 Meadowbrook</strong><br><span style="color:var(--slate);font-size:11px">Pewaukee</span></td>
+      <td>Addition + Deck</td>
+      <td>$78,000</td>
+      <td><span class="badge b-hot">HIGH</span></td>
+      <td><button class="btn btn-primary">View Lead</button></td>
+    </tr>
+    <tr>
+      <td><strong>310 Oak St</strong><br><span style="color:var(--slate);font-size:11px">Hartland</span></td>
+      <td>Full Exterior Renovation</td>
+      <td>$65,000</td>
+      <td><span class="badge b-warm">MED</span></td>
+      <td><button class="btn btn-primary">View Lead</button></td>
+    </tr>
+    <tr>
+      <td><strong>845 Lake Dr</strong><br><span style="color:var(--slate);font-size:11px">Oconomowoc</span></td>
+      <td>Master Suite Remodel</td>
+      <td>$54,000</td>
+      <td><span class="badge b-warm">MED</span></td>
+      <td><button class="btn btn-primary">View Lead</button></td>
+    </tr>
+  </table>
+
+  <div class="section-head">
+    <div class="section-num">2</div>
+    <h3>Price Reduction Alerts</h3>
+    <span class="sub">Motivated sellers • Outreach scripts drafted</span>
+  </div>
+
+  <div class="card open">
+    <div class="card-header">
+      <div class="lead-meta">
+        <div class="lead-name">4410 Lake View Ct, Pewaukee <span class="badge b-warm">MOTIVATED</span></div>
+        <div class="lead-sub">3rd price reduction in 21 days • Listed at $445K (was $485K)</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="draft-box">
+        <div class="draft-label">AI-Drafted Outreach to Listing Agent</div>
+        <div class="draft-text">Hey [Listing Agent], Jason Patti here. Noticed your listing on Lake View Ct had another price adjustment. I have a pre-approved buyer. Maria Kovacs. actively looking in Pewaukee under $450K. Would love to set up a showing this week if your seller is flexible on terms. Let me know.</div>
+      </div>
+      <div class="actions"><button class="btn btn-primary">Approve & Send</button><button class="btn btn-outline">Edit</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PHONE BOT PHASE 3 ===== -->
+<div class="tab-panel" id="tab-phonebot">
+  <div class="page-title-bar">
+    <h1>AI Phone Bot</h1>
+    <span class="page-tag p3">PHASE 3</span>
+  </div>
+
+  <div class="coming-soon-card cs-phase3">
+    <h3>Unlocks in Phase 3. $500/month retainer</h3>
+    <p>Dedicated number forwards to your cell first. If no answer in 4 rings, AI bot picks up, qualifies the caller, and drops a scored lead into your morning brief with callback script ready. You told me this was your #1 need.</p>
+  </div>
+
+  <div class="section-head">
+    <div class="section-num">1</div>
+    <h3>Last Night's Missed Call. Captured</h3>
+  </div>
+
+  <div class="card open">
+    <div class="card-header">
+      <div class="lead-meta">
+        <div class="lead-name">Unknown Caller. 7:42 PM <span class="badge b-miss">BOT CAPTURED</span></div>
+        <div class="lead-sub">Called about 142 Mill Pond Rd listing • Pre-approved • ~$750K budget</div>
+      </div>
+      <div class="lead-score"><div class="score-bar"><div class="track"><div class="fill" style="width:80%;background:var(--green)"></div></div><div class="num" style="color:var(--green)">8</div></div></div>
+    </div>
+    <div class="card-body">
+      <div class="transcript">
+        <div class="transcript-line"><div class="who bot">Bot:</div><div>Hi, you've reached Jason Patti's assistant. Jason is with a client right now. How can I help?</div></div>
+        <div class="transcript-line"><div class="who caller">Caller:</div><div>I wanted to ask about the property on Mill Pond Road. the one with the water access.</div></div>
+        <div class="transcript-line"><div class="who bot">Bot:</div><div>That's a beautiful 5-bed on 1.53 acres with 163 feet of water access. Are you pre-approved?</div></div>
+        <div class="transcript-line"><div class="who caller">Caller:</div><div>Yes, pre-approved. Budget's around $750K. Is that in range?</div></div>
+        <div class="transcript-line"><div class="who bot">Bot:</div><div>Right in range. listed at $764,900 and the seller is flexible. When's the best time for Jason to call you back?</div></div>
+        <div class="transcript-line"><div class="who caller">Caller:</div><div>Morning works. Before 10.</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
+        <div style="background:white;border-radius:6px;padding:8px;text-align:center"><div style="font-size:9px;color:var(--slate);font-weight:bold">PRE-APPROVED</div><div style="color:var(--green);font-family:'Trebuchet MS';font-weight:bold;font-size:14px">Yes</div></div>
+        <div style="background:white;border-radius:6px;padding:8px;text-align:center"><div style="font-size:9px;color:var(--slate);font-weight:bold">BUDGET</div><div style="color:var(--navy);font-family:'Trebuchet MS';font-weight:bold;font-size:14px">~$750K</div></div>
+        <div style="background:white;border-radius:6px;padding:8px;text-align:center"><div style="font-size:9px;color:var(--slate);font-weight:bold">CALLBACK</div><div style="color:var(--teal);font-family:'Trebuchet MS';font-weight:bold;font-size:14px">Before 10am</div></div>
+      </div>
+
+      <div class="draft-box">
+        <div class="draft-label">AI-Drafted Callback Script</div>
+        <div class="draft-text">"Hi. Jason Patti calling back. My assistant mentioned you called about Mill Pond Road. Great news. you're right in range and the seller is flexible. I'd love to walk you through it. When works for you this week?"</div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" style="background:var(--green)">Call Now</button>
+        <button class="btn btn-primary">Approve & Send Text</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DECISION COUNCIL PHASE 3 ===== -->
+<div class="tab-panel" id="tab-council">
+  <div class="page-title-bar">
+    <h1>Decision Council</h1>
+    <span class="page-tag p3">PHASE 3</span>
+  </div>
+
+  <div class="coming-soon-card cs-phase3">
+    <h3>Unlocks in Phase 3. $500/month retainer</h3>
+    <p>Describe a complex situation. Four specialized AI agents give independent recommendations. You are the chairman. Nothing leaves without your approval.</p>
+  </div>
+
+  <div class="section-head">
+    <div class="section-num">1</div>
+    <h3>Sample Situation: Multiple Offer Strategy</h3>
+  </div>
+
+  <div style="background:var(--light);border-radius:10px;padding:16px;margin-bottom:16px">
+    <div style="font-size:12px;color:var(--slate);margin-bottom:4px;font-weight:bold">SITUATION</div>
+    <div style="color:var(--navy);font-size:14px;line-height:1.6">My seller at 891 Hillside just got three offers. Two at asking ($589K), one $10K over with a 45-day close. The over-asking buyer has 10% down. The asking-price buyers have 20% down and are pre-approved with TJ. Which should I recommend?</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px">
+    <div class="card open" style="margin-bottom:0">
+      <div class="card-header"><div class="lead-meta"><div class="lead-name" style="color:var(--teal)">Agent 1: Market Analyst</div><div class="lead-sub">Recommends: asking-price buyer with TJ</div></div></div>
+      <div class="card-body"><div style="font-size:13px;color:var(--navy);line-height:1.6">Higher down payment = cleaner close, lower risk of appraisal gap. TJ knows his buyers. 10% down buyer is 30% more likely to have financing issues based on industry data.</div></div>
+    </div>
+    <div class="card open" style="margin-bottom:0">
+      <div class="card-header"><div class="lead-meta"><div class="lead-name" style="color:var(--amber)">Agent 2: Negotiator</div><div class="lead-sub">Recommends: counter all three</div></div></div>
+      <div class="card-body"><div style="font-size:13px;color:var(--navy);line-height:1.6">Three offers = leverage. Counter at $599K with escalation clauses. Let buyers compete. Seller nets $10K+ more with minimal risk.</div></div>
+    </div>
+    <div class="card open" style="margin-bottom:0">
+      <div class="card-header"><div class="lead-meta"><div class="lead-name" style="color:var(--coral)">Agent 3: Risk Analyst</div><div class="lead-sub">Recommends: over-asking if appraisal gap covered</div></div></div>
+      <div class="card-body"><div style="font-size:13px;color:var(--navy);line-height:1.6">$10K over is attractive, but only if buyer waives appraisal gap. Ask listing agent to request proof of funds and gap coverage before accepting.</div></div>
+    </div>
+    <div class="card open" style="margin-bottom:0">
+      <div class="card-header"><div class="lead-meta"><div class="lead-name" style="color:var(--green)">Agent 4: Relationship Manager</div><div class="lead-sub">Recommends: asking-price buyer + thank you to others</div></div></div>
+      <div class="card-body"><div style="font-size:13px;color:var(--navy);line-height:1.6">TJ is your referral partner. Choosing his buyer strengthens that relationship long-term. The other two buyers stay in your database as warm leads.</div></div>
+    </div>
+  </div>
+
+  <div style="background:var(--navy);color:white;border-radius:10px;padding:16px">
+    <div style="font-size:11px;color:var(--gold);font-weight:bold;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px">CHAIRMAN'S DECISION. JASON APPROVES</div>
+    <div style="font-size:14px;line-height:1.6">Take asking-price offer with TJ's buyer. Send professional decline + thank you to the other two with note: "will keep you in mind for similar listings." Preserves relationships, minimizes risk, strengthens TJ partnership.</div>
+    <div class="actions" style="margin-top:12px"><button class="btn" style="background:var(--gold);color:var(--navy)">Execute This Plan</button></div>
+  </div>
+</div>
+
+<!-- ===== BUSINESS GOALS ===== -->
+<div class="tab-panel" id="tab-goals">
+  <div class="page-title-bar">
+    <h1>Business Goals & ROI</h1>
+    <span class="page-tag">PHASE 1</span>
+  </div>
+
+  <div class="greeting-card" style="background:linear-gradient(135deg,var(--gold) 0%, #A07000 100%)">
+    <h2 style="color:var(--navy-dark)">No more feast-or-famine.</h2>
+    <div class="summary" style="color:rgba(45,62,80,0.9)">Your targets on screen every morning. The system that makes them reachable.</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+    <div class="progress-card">
+      <div class="progress-head"><span>Revenue Goal</span><span>$63K of $188K. 34%</span></div>
+      <div class="progress-track"><div class="progress-fill" style="width:34%;background:var(--green)"></div></div>
+      <div style="margin-top:8px;font-size:12px;color:var(--slate)">$125K remaining • 32 weeks • need $3,900/week avg</div>
+    </div>
+    <div class="progress-card">
+      <div class="progress-head"><span>Homes Sold</span><span>8 of 40. 20%</span></div>
+      <div class="progress-track"><div class="progress-fill" style="width:20%;background:var(--teal)"></div></div>
+      <div style="margin-top:8px;font-size:12px;color:var(--slate)">32 homes needed • averaging ~$8,200 commission each</div>
+    </div>
+  </div>
+
+  <div class="alert-bar">
+    <div class="icon">$</div>
+    <div class="body">
+      <h4>Path to $188K This Year</h4>
+      <p>Need <strong>32 more homes</strong> at avg $8.2K commission. With AgentPulse generating 30-50 exclusive leads/month at 5% conversion, you are <strong>on track to exceed your goal by $40K</strong> by year-end.</p>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-num">1</div>
+    <h3>Weighted Pipeline Forecast</h3>
+    <span class="sub">Readiness score × commission estimate</span>
+  </div>
+
+  <table class="data-table">
+    <tr><th>Client</th><th>Area</th><th>Budget</th><th>Score</th><th>Est. Commission</th></tr>
+    <tr><td><strong>Greg Sorenson</strong></td><td>Delafield</td><td>$700K</td><td><span class="badge b-hot">9</span></td><td style="color:var(--green)">$15,750</td></tr>
+    <tr><td><strong>Jennifer Liu</strong></td><td>Hartland</td><td>$780K</td><td><span class="badge b-hot">9</span></td><td style="color:var(--green)">$17,550</td></tr>
+    <tr><td><strong>Maria Kovacs</strong></td><td>Pewaukee</td><td>$450K</td><td><span class="badge b-hot">8</span></td><td style="color:var(--green)">$9,000</td></tr>
+    <tr><td><strong>Tom Brzezinski</strong></td><td>Lake Country</td><td>$550K</td><td><span class="badge b-warm">7</span></td><td style="color:var(--amber)">$9,625</td></tr>
+    <tr><td><strong>Stephanie Walsh</strong></td><td>Lake Country</td><td>$620K</td><td><span class="badge b-warm">7</span></td><td style="color:var(--amber)">$10,850</td></tr>
+    <tr><td><strong>Dave & Lynn Trembley</strong></td><td>Hartland</td><td>$580K</td><td><span class="badge b-warm">6</span></td><td style="color:var(--amber)">$8,700</td></tr>
+    <tr style="background:var(--navy);color:white"><td colspan="4"><strong>TOTAL WEIGHTED PIPELINE</strong></td><td style="color:var(--gold);font-family:'Trebuchet MS';font-weight:bold">$71,475</td></tr>
+  </table>
+</div>
+
+<!-- ===== PARTNERS ===== -->
+<div class="tab-panel" id="tab-partners">
+  <div class="page-title-bar">
+    <h1>Referral Partners</h1>
+    <span class="page-tag">PHASE 1</span>
+  </div>
+
+  <div class="greeting-card" style="background:linear-gradient(135deg,var(--teal) 0%, var(--navy) 100%)">
+    <h2 style="color:white">TJ & Lauren. skin in the game.</h2>
+    <div class="summary">Show them these numbers. If they co-invest in AgentPulse, everyone wins.</div>
+  </div>
+
+  <div class="partner-grid">
+    <div class="partner-card tj">
+      <h4>TJ Milewski</h4>
+      <div class="role">Preferred Lender • BNI Revenue by Referrals</div>
+      <div class="partner-stats">
+        <div><div class="num">4</div><div class="nlabel">active referrals</div></div>
+        <div><div class="rev">$12-18K</div><div class="nlabel">est. loan revenue from Jason's pipeline</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--navy);line-height:1.5;margin-bottom:10px">4 active buyers referred for pre-approval. If 2 close, that's $12-18K in loan origination revenue. Every unqualified chatbot lead routes to TJ automatically.</div>
+    </div>
+    <div class="partner-card lauren">
+      <h4>Lauren. Title Services</h4>
+      <div class="role">Preferred Title Partner • BNI Revenue by Referrals</div>
+      <div class="partner-stats">
+        <div><div class="num">6</div><div class="nlabel">active deals</div></div>
+        <div><div class="rev">$9-15K</div><div class="nlabel">est. title revenue from Jason's pipeline</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--navy);line-height:1.5;margin-bottom:10px">6 active deals where Lauren's title services are engaged. Avg title policy $1,500-$2,500 per transaction.</div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-num">1</div>
+    <h3>Co-Investment Opportunity</h3>
+  </div>
+
+  <table class="data-table">
+    <tr><th>Partner</th><th>Current Value</th><th>If They Co-Invest $500</th><th>Monthly Upside</th></tr>
+    <tr><td><strong>TJ Milewski</strong></td><td>4 referrals/mo</td><td>Featured on chatbot (auto-routing)</td><td style="color:var(--green)"><strong>6-10 pre-approvals/mo</strong></td></tr>
+    <tr><td><strong>Lauren (Title)</strong></td><td>6 deals/mo</td><td>Featured on all closing pages</td><td style="color:var(--green)"><strong>9-15 title deals/mo</strong></td></tr>
+  </table>
+</div>
+
+</div>
+
+<script>
+// ============ LEAD DATA ============
+const DEMO_LEADS = [
+  {id:1,name:"Greg Sorenson",email:"greg@email.com",phone:"(262) 555-0142",area:"Delafield",budget:700000,pa:true,days:1,score:9,status:"hot",source:"Zillow",property:"142 Mill Pond Rd",note:"Called about waterfront. Very motivated. Tour scheduled 10am today."},
+  {id:2,name:"Maria Kovacs",email:"maria@email.com",phone:"(262) 555-0287",area:"Pewaukee",budget:450000,pa:true,days:3,score:8,status:"hot",source:"Referral",property:"Pewaukee area",note:"Pre-approved with TJ. Looking for spring move."},
+  {id:3,name:"Jennifer Liu",email:"jennifer@email.com",phone:"(414) 555-0912",area:"Hartland",budget:780000,pa:true,days:2,score:9,status:"hot",source:"Own Website",property:"Hartland executive",note:"Qualified buyer. Viewed 2 properties. Moving fast."},
+  {id:9,name:"Missed Caller",email:"unknown",phone:"(262) 555-1847",area:"Delafield",budget:750000,pa:true,days:0,score:8,status:"missed",source:"AI Phone Bot",property:"Called re: Mill Pond Rd",note:"Called 7:42pm. Bot captured full qualification. Callback before 10am requested."},
+  {id:4,name:"Stephanie Walsh",email:"steph@email.com",phone:"(414) 555-0184",area:"Lake Country",budget:620000,pa:true,days:14,score:7,status:"warm",source:"Chatbot",property:"Lake Country acreage",note:"Wants land. Pre-approved. Timeline 90 days."},
+  {id:10,name:"Tom Brzezinski",email:"tom@email.com",phone:"(262) 555-0445",area:"Lake Country",budget:550000,pa:true,days:5,score:7,status:"warm",source:"Own Website",property:"Lake Country",note:"Recently divorced, needs to move by summer."},
+  {id:3,name:"Dave and Lynn Trembley",email:"dave@email.com",phone:"(262) 555-0391",area:"Hartland",budget:580000,pa:false,days:7,score:6,status:"warm",source:"Zillow",property:"Hartland subdivision",note:"Toured 3 homes. Not pre-approved yet. TJ referral sent."},
+  {id:5,name:"Bob Reinhart",email:"bob@email.com",phone:"(262) 555-0556",area:"Oconomowoc",budget:390000,pa:false,days:45,score:3,status:"cold",source:"Zillow",property:"Oconomowoc condo",note:"Said 6 months timeline. Cited rates as concern."},
+  {id:6,name:"Amy and Chris Vela",email:"amy@email.com",phone:"(312) 555-0729",area:"Delafield",budget:510000,pa:false,days:62,score:2,status:"cold",source:"Referral",property:"Delafield schools",note:"Relocating from Chicago. Rate concerns. Timeline unclear."},
+  {id:7,name:"Frank Kowalski",email:"frank@email.com",phone:"(262) 555-0834",area:"Pewaukee",budget:320000,pa:false,days:90,score:1,status:"cold",source:"Zillow",property:"Pewaukee starter",note:"Waiting for rates to drop. Haven't heard back."},
+];
+
+const DRAFTS = {
+  1: "Hey Greg, Jason here. Still thinking about the Mill Pond waterfront? Got two more similar properties that came up this week. one's under your budget. Worth 10 minutes. Thursday afternoon work?",
+  2: "Hi Maria, Jason Patti. Spring move still the plan? Three new Pewaukee listings hit this week that match your criteria exactly. Can I send them over?",
+  3: "Jennifer, Jason here. You've been moving fast on the Hartland executive and I don't want to lose it. Seller just confirmed open to quick close. Call me today?",
+  9: "Hi. Jason Patti returning your call about the Mill Pond property. Sorry I missed you. I'd love to walk you through it. Call me back or reply with a good time.",
+  4: "Hi Stephanie, Jason. 90-day timeline in Lake Country still on? I have a couple properties watching that hit your criteria. Want me to send them over?",
+  5: "Bob, Jason. Quick heads up. rates just dropped to 6.30%. Want to run the numbers on what that means for your monthly payment?",
+  7: "Frank, Jason here. Rates at 6.30% now, off the peak. Want to see what a $320K purchase looks like at today's rate vs. 6 months ago?",
+};
+
+const sc = (s) => s >= 8 ? 'var(--green)' : s >= 5 ? 'var(--amber)' : 'var(--coral)';
+
+// ============ RENDER HELPERS ============
+function renderScoreBar(score) {
+  return `<div class="score-bar"><div class="track"><div class="fill" style="width:${score*10}%;background:${sc(score)}"></div></div><div class="num" style="color:${sc(score)}">${score}</div></div>`;
+}
+
+function renderLeadCard(lead) {
+  const statusMap = {
+    hot: { label: 'HOT', cls: 'b-hot' },
+    warm: { label: 'WARM', cls: 'b-warm' },
+    cold: { label: 'COLD', cls: 'b-cold' },
+    missed: { label: 'MISSED', cls: 'b-miss' },
+  };
+  const s = statusMap[lead.status] || statusMap.cold;
+  const paBadge = lead.pa === true
+    ? '<span class="badge b-pa">PRE-APPROVED</span>'
+    : '<span class="badge b-nopa">NOT PRE-APPROVED</span>';
+  const isNew = lead.source === 'Website Chatbot' ? '<span class="badge b-new">NEW</span>' : '';
+  const draft = DRAFTS[lead.id] || `Hi ${lead.name.split(' ')[0]}, Jason here. Following up on our conversation. Let me know if you have any questions about the ${lead.area} market. always happy to help.`;
+
+  return `
+    <div class="card" onclick="this.classList.toggle('open')">
+      <div class="card-header">
+        <div class="lead-meta">
+          <div class="lead-name">${lead.name} <span class="badge ${s.cls}">${s.label}</span> ${paBadge} ${isNew}</div>
+          <div class="lead-sub">${lead.area} • $${(lead.budget/1000).toFixed(0)}K • ${lead.days === 0 ? 'Today' : lead.days + 'd ago'} • via ${lead.source}</div>
+        </div>
+        <div class="lead-score">${renderScoreBar(lead.score)}</div>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="card-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+          <div><div style="font-size:10px;color:var(--slate);font-weight:bold;text-transform:uppercase">Property</div><div style="font-size:13px;color:var(--navy)">${lead.property}</div></div>
+          <div><div style="font-size:10px;color:var(--slate);font-weight:bold;text-transform:uppercase">Contact</div><div style="font-size:13px;color:var(--teal)">${lead.phone}</div></div>
+          <div style="grid-column:1/-1"><div style="font-size:10px;color:var(--slate);font-weight:bold;text-transform:uppercase">Last Note</div><div style="font-size:13px;color:var(--navy)">${lead.note}</div></div>
+        </div>
+        <div class="draft-box">
+          <div class="draft-label">AI-Drafted Follow-Up (in Jason's voice)</div>
+          <div class="draft-text">${draft}</div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary">Approve & Send</button>
+          <button class="btn btn-outline">Edit Draft</button>
+          <button class="btn btn-danger">Skip</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ============ PRIORITY LEADS (morning brief) ============
+function renderPriority() {
+  const priority = DEMO_LEADS.filter(l => l.status === 'hot' || l.status === 'missed').slice(0, 4);
+  document.getElementById('priorityLeads').innerHTML = priority.map(renderLeadCard).join('');
+}
+
+// ============ FILTER + RENDER LEADS ============
+let currentFilter = 'all';
+
+function renderFilters(leads) {
+  const counts = {
+    all: leads.length,
+    hot: leads.filter(l => l.status === 'hot').length,
+    warm: leads.filter(l => l.status === 'warm').length,
+    cold: leads.filter(l => l.status === 'cold').length,
+    missed: leads.filter(l => l.status === 'missed').length,
+  };
+  const pills = [
+    {key:'all', label:'ALL'},
+    {key:'hot', label:'HOT'},
+    {key:'warm', label:'WARM'},
+    {key:'cold', label:'COLD'},
+    {key:'missed', label:'MISSED'},
+  ];
+  document.getElementById('filterRow').innerHTML = pills.map(p =>
+    `<div class="filter-pill ${currentFilter === p.key ? 'active' : ''}" onclick="setFilter('${p.key}')">
+      <div class="n">${counts[p.key]}</div>
+      <div class="l">${p.label}</div>
+    </div>`
+  ).join('');
+}
+
+function renderLeadsList() {
+  const allLeads = loadAllLeads();
+  renderFilters(allLeads);
+  const filtered = currentFilter === 'all' ? allLeads : allLeads.filter(l => l.status === currentFilter);
+  document.getElementById('leadsList').innerHTML = filtered.length
+    ? filtered.map(renderLeadCard).join('')
+    : '<div style="padding:30px;text-align:center;color:var(--slate)">No leads in this category.</div>';
+}
+
+function setFilter(f) {
+  currentFilter = f;
+  renderLeadsList();
+}
+
+// ============ CLIENT INTEL ============
+function renderClients() {
+  const clients = DEMO_LEADS.filter(l => l.status === 'hot' || l.status === 'warm').slice(0, 4);
+  document.getElementById('clientList').innerHTML = clients.map(c => {
+    const personality = c.score >= 8 ? 'Decisive. wants action' : c.score >= 6 ? 'Analytical. wants data' : 'Relational. wants trust';
+    const stage = c.status === 'hot' ? 'Active. offer-ready' : 'Nurture. needs follow-up';
+    const nextAction = c.pa ? 'Book second showing this week' : 'Send TJ pre-approval intro';
+    return `
+      <div class="card open">
+        <div class="card-header">
+          <div style="width:36px;height:36px;border-radius:18px;background:var(--navy);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Trebuchet MS';font-weight:bold;font-size:14px;flex-shrink:0">${c.name.split(' ').map(n=>n[0]).join('').slice(0,2)}</div>
+          <div class="lead-meta">
+            <div class="lead-name">${c.name}</div>
+            <div class="lead-sub">${c.area} • $${(c.budget/1000).toFixed(0)}K budget</div>
+          </div>
+          <div class="lead-score">${renderScoreBar(c.score)}</div>
+        </div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
+            <div style="background:white;padding:8px 10px;border-radius:6px;border:1px solid var(--border)"><div style="font-size:9px;color:var(--slate);font-weight:bold;text-transform:uppercase">Personality</div><div style="font-size:12px;color:var(--navy)">${personality}</div></div>
+            <div style="background:white;padding:8px 10px;border-radius:6px;border:1px solid var(--border)"><div style="font-size:9px;color:var(--slate);font-weight:bold;text-transform:uppercase">Stage</div><div style="font-size:12px;color:var(--navy)">${stage}</div></div>
+            <div style="background:white;padding:8px 10px;border-radius:6px;border:1px solid var(--border)"><div style="font-size:9px;color:var(--slate);font-weight:bold;text-transform:uppercase">Next Action</div><div style="font-size:12px;color:var(--teal);font-weight:bold">${nextAction}</div></div>
+          </div>
+          <div style="font-size:12px;color:var(--slate);margin-bottom:10px">${c.note}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ============ LOAD LEADS FROM CHATBOT ============
+function loadAllLeads() {
+  let webLeads = [];
+  try {
+    webLeads = JSON.parse(localStorage.getItem('agentpulse_leads') || '[]');
+  } catch (e) {}
+  return [..webLeads, ..DEMO_LEADS];
+}
+
+function checkForNewLeads() {
+  try {
+    const webLeads = JSON.parse(localStorage.getItem('agentpulse_leads') || '[]');
+    if (webLeads.length > 0) {
+      const latest = webLeads[0];
+      const banner = document.getElementById('newLeadBanner');
+      const detail = document.getElementById('newLeadDetail');
+      if (banner && detail) {
+        detail.textContent = `${latest.name} • ${latest.area} • ${latest.status.toUpperCase()} (score ${latest.score}/10)`;
+        banner.classList.add('show');
+      }
+    }
+  } catch (e) {}
+}
+
+// ============ TAB SWITCHING ============
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + tab).classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+});
+
+// ============ CLOCK ============
+function updateClock() {
+  const now = new Date();
+  const opts = { hour: 'numeric', minute: '2-digit', hour12: true };
+  document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', opts);
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ============ INIT ============
+renderPriority();
+renderLeadsList();
+renderClients();
+checkForNewLeads();
+setInterval(checkForNewLeads, 2000);
+
+// Set greeting date
+const today = new Date();
+document.getElementById('greetingDate').textContent =
+  today.toLocaleDateString('en-US', {weekday:'long',month:'long',day:'numeric',year:'numeric'}) + '  |  Waukesha County Market';
+</script>
+
+</body>
+</html>
