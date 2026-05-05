@@ -26,7 +26,7 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "RealEstateAgent",
+  "@type": ["RealEstateAgent", "LocalBusiness"],
   "name": "The Sue Patti Group",
   "alternateName": "Sue Patti Group",
   "description": "Lake Country Wisconsin real estate team at Realty Executives Integrity. Sue Patti (Broker/Owner, 41 years experience) and Jason Patti (REALTOR). 522 combined homes sold, 60+ verified five-star team reviews. Serving Waukesha, Dodge, and Jefferson counties.",
@@ -34,6 +34,7 @@
   "telephone": "+1-262-370-7990",
   "email": "Sue@TheSuePattiGroup.com",
   "image": "https://photos.zillowstatic.com/fp/3e23c6e47bbe518a30afdba90745a673-h_l.jpg",
+  "priceRange": "$$$",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "810 Cardinal Lane, Suite 100",
@@ -47,6 +48,20 @@
     "latitude": "43.1042",
     "longitude": "-88.3417"
   },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "09:00",
+      "closes": "18:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Saturday", "Sunday"],
+      "opens": "10:00",
+      "closes": "16:00"
+    }
+  ],
   "areaServed": [
     { "@type": "AdministrativeArea", "name": "Waukesha County, Wisconsin" },
     { "@type": "AdministrativeArea", "name": "Dodge County, Wisconsin" },
@@ -180,7 +195,7 @@
       <div class="sb-label">Years Experience</div>
     </div>
     <div class="sb-item">
-      <div class="sb-num">$472K</div>
+      <div class="sb-num">$533K</div>
       <div class="sb-label">Average Sale</div>
     </div>
   </div>
