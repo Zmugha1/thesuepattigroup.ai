@@ -671,6 +671,77 @@ a:hover { text-decoration: underline; }
   gap: 8px;
 }
 
+.newsletter-capture {
+  background: rgba(58, 191, 191, 0.08);
+  border: 1px solid rgba(58, 191, 191, 0.25);
+  border-radius: 8px;
+  padding: 24px 28px;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.newsletter-capture .nl-text { flex: 1; min-width: 240px; }
+.newsletter-capture h4 {
+  color: var(--white);
+  font-family: 'Trebuchet MS';
+  font-size: 17px;
+  margin-bottom: 4px;
+}
+.newsletter-capture p {
+  color: var(--teal-light);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+}
+.newsletter-form {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  min-width: 280px;
+}
+.newsletter-form input {
+  flex: 1;
+  padding: 11px 14px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 4px;
+  background: rgba(255,255,255,0.06);
+  color: var(--white);
+  font-family: Calibri, sans-serif;
+  font-size: 14px;
+}
+.newsletter-form input::placeholder { color: rgba(255,255,255,0.4); }
+.newsletter-form input:focus {
+  outline: none;
+  border-color: var(--teal);
+  background: rgba(255,255,255,0.1);
+}
+.newsletter-form button {
+  padding: 11px 22px;
+  background: var(--coral);
+  color: var(--white);
+  border: none;
+  border-radius: 4px;
+  font-family: 'Trebuchet MS';
+  font-weight: bold;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.newsletter-form button:hover { background: #D45540; }
+.newsletter-form button:disabled { background: var(--slate); cursor: default; }
+.newsletter-status {
+  font-size: 12px;
+  color: var(--gold);
+  margin-top: 8px;
+  width: 100%;
+}
+@media (max-width: 600px) {
+  .newsletter-capture { flex-direction: column; align-items: stretch; gap: 16px; }
+}
+
 /* ===== PAGE HERO (interior pages) ===== */
 .page-hero {
   background: var(--navy);

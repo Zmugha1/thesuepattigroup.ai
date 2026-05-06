@@ -191,6 +191,8 @@ function saveAndShowMatches() {
   const lead = {
     id: 'web-' + Date.now(),
     sessionId: attribution ? attribution.sessionId : null,
+    lead_type: 'buyer',
+    capture_source: 'chatbot',
     name: answers.name,
     email: answers.email,
     phone: answers.phone,
@@ -227,7 +229,7 @@ function saveAndShowMatches() {
   const container = document.getElementById('chatbot-body');
   const tjBlurb = pa
     ? ''
-    : '<div class="captured-notice" style="background:#FEF3DC;color:#C8960C;border-color:#C8960C;margin-top:8px"><strong>TJ Milewski</strong>, our preferred lender, can pre-approve you in 24 hours at no cost. We will introduce you.</div>';
+    : '<div class="captured-notice" style="background:#FEF3DC;color:#C8960C;border-color:#C8960C;margin-top:8px">Not pre-approved yet? No problem. Jason can connect you with a trusted lender who can pre-approve you in 24 hours at no cost.</div>';
 
   container.innerHTML = `
     <div class="chatbot-success">

@@ -111,14 +111,14 @@
 
           <div class="form-row full">
             <label>Property Address</label>
-            <input type="text" placeholder="123 Main St" />
+            <input type="text" id="hv_address" placeholder="123 Main St" />
           </div>
 
           <div class="form-row">
             <div>
               <label>City</label>
-              <select>
-                <option>Select city</option>
+              <select id="hv_city">
+                <option value="">Select city</option>
                 <option>Hartland</option>
                 <option>Delafield</option>
                 <option>Oconomowoc</option>
@@ -133,15 +133,15 @@
             </div>
             <div>
               <label>Zip Code</label>
-              <input type="text" placeholder="53029" />
+              <input type="text" id="hv_zip" placeholder="53029" />
             </div>
           </div>
 
           <div class="form-row">
             <div>
               <label>Bedrooms</label>
-              <select>
-                <option>Select</option>
+              <select id="hv_beds">
+                <option value="">Select</option>
                 <option>2</option>
                 <option>3</option>
                 <option>4</option>
@@ -150,14 +150,14 @@
             </div>
             <div>
               <label>Square Feet (approx)</label>
-              <input type="text" placeholder="2,500" />
+              <input type="text" id="hv_sqft" placeholder="2,500" />
             </div>
           </div>
 
           <div class="form-row full">
             <label>When are you thinking of selling?</label>
-            <select>
-              <option>Select</option>
+            <select id="hv_timeline">
+              <option value="">Select</option>
               <option>Just curious about value</option>
               <option>Within 3 months</option>
               <option>3-6 months</option>
@@ -169,21 +169,21 @@
           <div class="form-row">
             <div>
               <label>Your Name</label>
-              <input type="text" placeholder="Full name" />
+              <input type="text" id="hv_name" placeholder="Full name" />
             </div>
             <div>
               <label>Phone</label>
-              <input type="tel" placeholder="(262) 555-0199" />
+              <input type="tel" id="hv_phone" placeholder="(262) 555-0199" />
             </div>
           </div>
 
           <div class="form-row full">
             <label>Email</label>
-            <input type="email" placeholder="you@email.com" />
+            <input type="email" id="hv_email" placeholder="you@email.com" />
           </div>
 
-          <button class="chatbot-submit" onclick="alert('Demo mode. In production, this routes to the dashboard as a SELLER lead.');return false;">Get My Home Value</button>
-          <p style="font-size:11px;color:var(--slate);margin-top:10px;text-align:center">No obligation. Your information stays private.</p>
+          <button class="chatbot-submit" id="hv_submit" type="button">Get My Home Value</button>
+          <p style="font-size:11px;color:var(--slate);margin-top:10px;text-align:center" id="hv_status">No obligation. Your information stays private.</p>
         </div>
       </div>
     </div>
@@ -192,6 +192,17 @@
 
 <footer class="footer">
   <div class="container">
+    <div class="newsletter-capture">
+      <div class="nl-text">
+        <h4>Lake Country Market Reports</h4>
+        <p>Monthly market updates, new listings, and recent sales delivered to your inbox. No spam. Unsubscribe anytime.</p>
+      </div>
+      <form class="newsletter-form" onsubmit="return false;">
+        <input type="email" placeholder="you@email.com" required />
+        <button type="submit">Subscribe</button>
+        <div class="newsletter-status"></div>
+      </form>
+    </div>
     <div class="footer-bottom">
       <span>© 2026 The Sue Patti Group  |  thesuepattigroup.ai</span>
       <span>Powered by AgentPulse  |  Dr. Data Decision Intelligence LLC</span>
@@ -200,5 +211,101 @@
 </footer>
 
 <script src="js/chatbot.js"></script>
+<script src="js/newsletter.js"></script>
+<script>
+// Seller lead capture - home valuation form
+(function() {
+  var btn = document.getElementById('hv_submit');
+  if (!btn) return;
+  
+  function getAttribution() {
+    try {
+      var ref = document.referrer || '';
+      var src = 'direct';
+      if (ref) {
+        var host = (new URL(ref)).hostname.replace('www.', '');
+        if (host.indexOf('chat.openai.com') > -1 || host.indexOf('chatgpt.com') > -1) src = 'ChatGPT';
+        else if (host.indexOf('claude.ai') > -1) src = 'Claude';
+        else if (host.indexOf('perplexity.ai') > -1) src = 'Perplexity';
+        else if (host.indexOf('google.') > -1) src = 'Google';
+        else if (host.indexOf('bing.') > -1) src = 'Bing';
+        else if (host.indexOf('facebook.') > -1) src = 'Facebook';
+        else if (host.indexOf('zillow.') > -1) src = 'Zillow';
+        else src = host;
+      }
+      var params = new URLSearchParams(window.location.search);
+      return {
+        source: src,
+        utm_source: params.get('utm_source') || null,
+        utm_medium: params.get('utm_medium') || null,
+        utm_campaign: params.get('utm_campaign') || null,
+        landing_page: window.location.pathname,
+        referrer: ref
+      };
+    } catch(e) { return { source: 'unknown' }; }
+  }
+  
+  function val(id) {
+    var el = document.getElementById(id);
+    return el ? (el.value || '').trim() : '';
+  }
+  
+  btn.addEventListener('click', function() {
+    var name = val('hv_name');
+    var phone = val('hv_phone');
+    var email = val('hv_email');
+    var address = val('hv_address');
+    var status = document.getElementById('hv_status');
+    
+    if (!name || !phone || !email || !address) {
+      if (status) {
+        status.style.color = '#E8604A';
+        status.textContent = 'Please fill in name, phone, email, and address.';
+      }
+      return;
+    }
+    
+    var lead = {
+      lead_type: 'seller',
+      capture_source: 'home_valuation_form',
+      timestamp: new Date().toISOString(),
+      session_id: 'sess_' + Date.now() + '_' + Math.random().toString(36).slice(2,8),
+      attribution: getAttribution(),
+      data: {
+        name: name,
+        phone: phone,
+        email: email,
+        property_address: address,
+        city: val('hv_city'),
+        zip: val('hv_zip'),
+        beds: val('hv_beds'),
+        sqft: val('hv_sqft'),
+        timeline: val('hv_timeline')
+      }
+    };
+    
+    try {
+      var existing = JSON.parse(localStorage.getItem('agentpulse_leads') || '[]');
+      existing.push(lead);
+      localStorage.setItem('agentpulse_leads', JSON.stringify(existing));
+    } catch(e) { console.error('Lead capture error', e); }
+    
+    // Success state
+    var form = document.querySelector('.valuation-form');
+    if (form) {
+      form.innerHTML = '<h3 style="color:var(--teal);margin-bottom:12px">Thank you, ' + name.split(' ')[0] + '.</h3>' +
+        '<p style="font-size:14px;color:var(--navy);line-height:1.6;margin-bottom:14px">Your valuation request for <strong>' + address + '</strong> has been received.</p>' +
+        '<div style="background:#FEF3DC;border-left:3px solid #C8960C;padding:14px;border-radius:4px;margin-bottom:14px">' +
+        '<p style="font-size:13px;color:var(--navy);line-height:1.5;margin:0"><strong>What happens next:</strong></p>' +
+        '<ul style="font-size:13px;color:var(--navy);margin:8px 0 0 18px;line-height:1.7">' +
+        '<li>Email with your valuation within 24 hours</li>' +
+        '<li>Personal call from Sue or Jason within 48 hours</li>' +
+        '<li>Comparable sales report for your neighborhood</li>' +
+        '</ul></div>' +
+        '<p style="font-size:11px;color:var(--slate);text-align:center">Your information stays private. No pressure, no obligation.</p>';
+    }
+  });
+})();
+</script>
 </body>
 </html>
