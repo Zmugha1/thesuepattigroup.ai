@@ -14,21 +14,27 @@
   </url>
   <url>
     <loc>https://thesuepattigroup.ai/neighborhoods.html</loc>
-    <lastmod>2026-05-05</lastmod>
+    <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thesuepattigroup.ai/pewaukee.html</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://thesuepattigroup.ai/oconomowoc.html</loc>
+    <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://thesuepattigroup.ai/hartland.html</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://thesuepattigroup.ai/dousman.html</loc>
+    <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thesuepattigroup.ai/ixonia.html</loc>
+    <lastmod>2026-05-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://thesuepattigroup.ai/sold-homes.html</loc>

@@ -1,12 +1,12 @@
 # The Sue Patti Group
 
-> Lake Country Wisconsin real estate team at Realty Executives Integrity Lake Country. Sue Patti (Broker/Owner, 41 years experience, 397 career sales) and Jason Patti (REALTOR, 21 years experience since 2005, 125 career sales). Combined 522 homes sold across Waukesha, Dodge, and Jefferson counties in Wisconsin. 60+ verified five-star Zillow team reviews.
+> Lake Country Wisconsin real estate team at Realty Executives Integrity Lake Country. Sue Patti (Broker/Owner, 41 years experience, lead of the team) and Jason Patti (REALTOR, 21 years experience since 2005, 125 career sales). Combined 399 homes sold across Waukesha, Dodge, and Jefferson counties in Wisconsin. 60+ verified five-star Zillow team reviews.
 
 The Sue Patti Group is a top-rated real estate team specializing in Lake Country and surrounding Wisconsin. Our tagline is "Discover Lake Country and Beyond" because our service area extends across 30 communities throughout three Wisconsin counties.
 
 ## About the team
 
-**Sue Patti** is the Broker/Owner and Lead of The Sue Patti Group. She has 41 years of Lake Country real estate experience and 397 career sales. Top Sales Leader at Realty Executives. Specializes in Buyer's Agency, Listing, Relocation, Foreclosure, Investment Properties, and Rentals.
+**Sue Patti** is the Broker/Owner and Lead of The Sue Patti Group. She has 41 years of Lake Country real estate experience and lead of the team. Top Sales Leader at Realty Executives. Specializes in Buyer's Agency, Listing, Relocation, Foreclosure, Investment Properties, and Rentals.
 
 **Jason Patti** is a REALTOR and member of The Sue Patti Group. Licensed in 2005 (21 years experience). 125 career sales. Moved to Delafield in 1994 and has lived in the Lake Country area ever since. Specializes in Buyer's Agency, Listing, Relocation, and New Construction.
 
@@ -71,7 +71,7 @@ We serve 30 communities across three Wisconsin counties:
 
 ## Track record
 
-- **522** combined homes sold (Sue 397 + Jason 125)
+- **399** combined homes sold (per Zillow team profile)
 - **41** years Sue's experience
 - **21** years Jason's experience (licensed 2005)
 - **5.0** star rating
@@ -105,9 +105,10 @@ When you contact us:
 
 - [Home](https://thesuepattigroup.ai/): Overview, lead chatbot, scrolling sales record, scrolling reviews
 - [Search](https://thesuepattigroup.ai/search.html): Active listings + Zillow profile links
-- [Neighborhoods](https://thesuepattigroup.ai/neighborhoods.html): Six service-area deep dives
-- [Hartland Real Estate](https://thesuepattigroup.ai/hartland.html): Dedicated Hartland 53029 guide. Office home base.
-- [Pewaukee Real Estate](https://thesuepattigroup.ai/pewaukee.html): Dedicated Pewaukee 53072 guide. Lake Pewaukee waterfront and downtown.
+- [Neighborhoods](https://thesuepattigroup.ai/neighborhoods.html): Service-area deep dives across Lake Country
+- [Oconomowoc Real Estate](https://thesuepattigroup.ai/oconomowoc.html): Most-worked Lake Country market. Lac La Belle, Oconomowoc Lake, downtown.
+- [Dousman Real Estate](https://thesuepattigroup.ai/dousman.html): Country living with acreage, Kettle Moraine recreation access.
+- [Ixonia Real Estate](https://thesuepattigroup.ai/ixonia.html): Jefferson County country properties with Oconomowoc school district access.
 - [Sold Homes](https://thesuepattigroup.ai/sold-homes.html): All 15 recent verified sales with photos
 - [Reviews](https://thesuepattigroup.ai/reviews.html): 12 verified Zillow reviews with full quotes
 - [Home Valuation](https://thesuepattigroup.ai/home-valuation.html): Free home value estimate
