@@ -222,6 +222,19 @@ function saveAndShowMatches() {
     existing.unshift(lead);
     localStorage.setItem('agentpulse_leads', JSON.stringify(existing));
     emitEvent('lead_captured', lead);
+    
+    // Send conversion event to GA4
+    if (typeof window.trackLeadEvent === 'function') {
+      window.trackLeadEvent('generate_lead', {
+        lead_type: 'buyer',
+        capture_source: 'chatbot',
+        score: score,
+        status: status,
+        budget: budgetMap[answers.budget] || 400000,
+        area: answers.area,
+        timeline: answers.timeline
+      });
+    }
   } catch (e) {
     console.log('Storage unavailable in this preview');
   }

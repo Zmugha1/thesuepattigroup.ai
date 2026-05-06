@@ -18,6 +18,27 @@
 <link rel="canonical" href="https://thesuepattigroup.ai/home-valuation.html">
 <link rel="stylesheet" href="css/style.css">
 
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLACEHOLDER"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLACEHOLDER', {
+    'send_page_view': true,
+    'cookie_flags': 'SameSite=None;Secure'
+  });
+  
+  // Custom event tracking for AgentPulse lead capture
+  window.trackLeadEvent = function(eventName, params) {
+    if (typeof gtag === 'function') {
+      gtag('event', eventName, params || {});
+    }
+  };
+</script>
+<!-- End Google Analytics 4 -->
+
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -289,6 +310,17 @@
       existing.push(lead);
       localStorage.setItem('agentpulse_leads', JSON.stringify(existing));
     } catch(e) { console.error('Lead capture error', e); }
+    
+    // Send conversion event to GA4
+    if (typeof window.trackLeadEvent === 'function') {
+      window.trackLeadEvent('generate_lead', {
+        lead_type: 'seller',
+        capture_source: 'home_valuation_form',
+        city: val('hv_city'),
+        zip: val('hv_zip'),
+        timeline: val('hv_timeline')
+      });
+    }
     
     // Success state
     var form = document.querySelector('.valuation-form');

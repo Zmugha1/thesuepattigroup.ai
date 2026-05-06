@@ -71,6 +71,15 @@
           localStorage.setItem('agentpulse_leads', JSON.stringify(existing));
         } catch (e) { /* silent */ }
         
+        // Send conversion event to GA4
+        if (typeof window.trackLeadEvent === 'function') {
+          window.trackLeadEvent('newsletter_signup', {
+            lead_type: 'newsletter',
+            capture_source: 'footer_newsletter',
+            page: window.location.pathname
+          });
+        }
+        
         // Success state
         input.disabled = true;
         btn.disabled = true;
