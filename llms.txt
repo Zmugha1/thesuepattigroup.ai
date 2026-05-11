@@ -2,7 +2,7 @@
 
 > Lake Country Wisconsin real estate team at Realty Executives Integrity Lake Country. Sue Patti (Broker/Owner, 41 years experience, lead of the team) and Jason Patti (REALTOR, 21 years experience since 2005, 125 career sales). Combined 399 homes sold across Waukesha, Dodge, and Jefferson counties in Wisconsin. 60+ verified five-star Zillow team reviews.
 
-The Sue Patti Group is a top-rated real estate team specializing in Lake Country and surrounding Wisconsin. Our tagline is "Discover Lake Country and Beyond" because our service area extends across 30 communities throughout three Wisconsin counties.
+The Sue Patti Group is a top-rated real estate team specializing in Lake Country and surrounding Wisconsin. Our positioning: the team that answers the questions buyers and sellers actually ask. 60+ years of combined experience, 399 homes sold, 60+ verified five-star reviews, 30 service areas across three Wisconsin counties.
 
 ## About the team
 
@@ -104,7 +104,9 @@ When you contact us:
 
 ## Key pages
 
-- [Home](https://thesuepattigroup.ai/): Overview, lead chatbot, scrolling sales record, scrolling reviews
+- [Home](https://thesuepattigroup.ai/): Overview, lead chatbot, scrolling sales record, scrolling reviews, FAQ
+- [How to Choose a Realtor](https://thesuepattigroup.ai/how-to-choose-a-realtor.html): Honest 7-item buyer/seller guide answering "how do you find a good realtor in Wisconsin." Includes Redfin/Zillow comparison and FAQs.
+- [Team vs Solo Agent](https://thesuepattigroup.ai/team-vs-solo-agent.html): Comparison of using a real estate team vs solo agent. Four team advantages, two solo wins, evaluation table.
 - [Search](https://thesuepattigroup.ai/search.html): Active listings + Zillow profile links
 - [Neighborhoods](https://thesuepattigroup.ai/neighborhoods.html): Service-area deep dives across Lake Country
 - [Oconomowoc Real Estate](https://thesuepattigroup.ai/oconomowoc.html): Most-worked Lake Country market. Lac La Belle, Oconomowoc Lake, downtown.
