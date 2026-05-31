@@ -291,7 +291,7 @@ function saveAndShowMatches() {
         <strong>Lead captured.</strong> Welcome to Lake Country, ${firstName}.
       </div>
 
-      <button class="chatbot-submit" onclick="resetChatbot()" style="background:var(--slate);margin-top:12px">Reset Demo</button>
+      <button class="chatbot-submit" onclick="resetChatbot()" style="background:var(--teal);margin-top:12px">Start a New Search</button>
     </div>
   `;
 }
