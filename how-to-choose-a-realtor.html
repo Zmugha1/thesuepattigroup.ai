@@ -412,11 +412,18 @@
         <h4>Lake Country Market Reports</h4>
         <p>Monthly market updates, new listings, and recent sales delivered to your inbox. No spam. Unsubscribe anytime.</p>
       </div>
-      <form class="newsletter-form" onsubmit="return false;">
-        <input type="email" placeholder="you@email.com" required />
-        <button type="submit">Subscribe</button>
-        <div class="newsletter-status"></div>
-      </form>
+      <form class="newsletter-form"
+      name="newsletter-signup"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      onsubmit="return handleNewsletterSubmit(event, this)">
+  <input type="hidden" name="form-name" value="newsletter-signup" />
+  <p style="display:none"><label>Don't fill this out if you're human: <input name="bot-field" /></label></p>
+  <input type="email" name="email" placeholder="you@email.com" required />
+  <button type="submit">Subscribe</button>
+  <div class="newsletter-status"></div>
+</form>
     </div>
     <div class="footer-bottom">
       <span>© 2026 The Sue Patti Group  |  thesuepattigroup.ai</span>

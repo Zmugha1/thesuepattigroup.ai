@@ -222,6 +222,36 @@ function saveAndShowMatches() {
     existing.unshift(lead);
     localStorage.setItem('agentpulse_leads', JSON.stringify(existing));
     emitEvent('lead_captured', lead);
+
+    // Persist to Netlify Forms (server-side capture for AgentPulse)
+    try {
+      const formData = new URLSearchParams();
+      formData.append('form-name', 'chatbot-lead');
+      formData.append('name', lead.name);
+      formData.append('email', lead.email);
+      formData.append('phone', lead.phone || '');
+      formData.append('area', lead.area || '');
+      formData.append('budget', String(lead.budget || ''));
+      formData.append('beds', lead.beds || '');
+      formData.append('pre_approved', String(lead.pa));
+      formData.append('timeline', lead.timeline || '');
+      formData.append('score', String(lead.score));
+      formData.append('status', lead.status);
+      formData.append('source', lead.source);
+      formData.append('timestamp', lead.timestamp);
+      formData.append('note', lead.note || '');
+      formData.append('bot-field', '');
+
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData.toString()
+      }).catch(function(err) {
+        console.warn('Netlify Forms submission failed (lead still in localStorage):', err);
+      });
+    } catch (err) {
+      console.warn('Netlify Forms submission error:', err);
+    }
     
     // Send conversion event to GA4
     if (typeof window.trackLeadEvent === 'function') {
@@ -299,6 +329,102 @@ function trackPageView() {
 }
 
 /* Auto-init */
+function postNewsletterToNetlify(email) {
+  try {
+    var formData = new URLSearchParams();
+    formData.append('form-name', 'newsletter-signup');
+    formData.append('email', email);
+    formData.append('bot-field', '');
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: formData.toString()
+    }).catch(function(err) {
+      console.warn('Netlify Forms submission failed (lead still in localStorage):', err);
+    });
+  } catch (err) {
+    console.warn('Netlify Forms submission error:', err);
+  }
+}
+
+window.handleNewsletterSubmit = function(event, form) {
+  event.preventDefault();
+  var input = form.querySelector('input[name="email"]');
+  var email = input ? (input.value || '').trim() : '';
+  var status = form.parentNode ? form.parentNode.querySelector('.newsletter-status') : null;
+  var btn = form.querySelector('button[type="submit"]');
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (status) {
+      status.style.color = '#E8604A';
+      status.textContent = 'Please enter a valid email address.';
+    }
+    return false;
+  }
+
+  // Enter-key submit path (newsletter.js only hooks button click)
+  if (event.type === 'submit') {
+    var lead = {
+      id: 'nl-' + Date.now(),
+      lead_type: 'newsletter',
+      capture_source: 'footer_newsletter',
+      email: email,
+      timestamp: new Date().toISOString(),
+      page: window.location.pathname,
+      attribution: (function() {
+        try {
+          var ref = document.referrer || '';
+          var src = 'direct';
+          if (ref) {
+            var host = (new URL(ref)).hostname.replace('www.', '');
+            if (host.indexOf('google.') > -1) src = 'Google';
+            else src = host;
+          }
+          return { source: src, landing_page: window.location.pathname, referrer: ref };
+        } catch (e) { return { source: 'unknown' }; }
+      })()
+    };
+    try {
+      var existing = JSON.parse(localStorage.getItem('agentpulse_leads') || '[]');
+      existing.unshift(lead);
+      localStorage.setItem('agentpulse_leads', JSON.stringify(existing));
+    } catch (e) { /* silent */ }
+    if (typeof window.trackLeadEvent === 'function') {
+      window.trackLeadEvent('newsletter_signup', {
+        lead_type: 'newsletter',
+        capture_source: 'footer_newsletter',
+        page: window.location.pathname
+      });
+    }
+    if (input) input.disabled = true;
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Subscribed';
+    }
+    if (status) {
+      status.style.color = '#F5C842';
+      status.textContent = 'You are subscribed. Lake Country market reports arrive monthly.';
+    }
+  }
+
+  postNewsletterToNetlify(email);
+  return false;
+};
+
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('.newsletter-form button[type="submit"]');
+  if (!btn) return;
+  var form = btn.closest('.newsletter-form');
+  if (!form) return;
+  setTimeout(function() {
+    var input = form.querySelector('input[name="email"]');
+    var email = input ? (input.value || '').trim() : '';
+    if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      postNewsletterToNetlify(email);
+    }
+  }, 150);
+}, false);
+
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', function() {
     renderChatbot();

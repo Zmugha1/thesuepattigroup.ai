@@ -85,6 +85,27 @@
 </head>
 <body>
 
+<form name="chatbot-lead"
+      netlify
+      netlify-honeypot="bot-field"
+      hidden>
+  <input type="hidden" name="form-name" value="chatbot-lead" />
+  <input type="text" name="name" />
+  <input type="email" name="email" />
+  <input type="tel" name="phone" />
+  <input type="text" name="area" />
+  <input type="text" name="budget" />
+  <input type="text" name="beds" />
+  <input type="text" name="pre_approved" />
+  <input type="text" name="timeline" />
+  <input type="text" name="score" />
+  <input type="text" name="status" />
+  <input type="text" name="source" />
+  <input type="text" name="timestamp" />
+  <input type="text" name="note" />
+  <input type="text" name="bot-field" />
+</form>
+
 <div class="topbar"><div class="container"><span>Realty Executives Integrity Lake Country</span><span>📞 (262) 901-8348  |  📧 Jason@TheSuePattiGroup.com</span></div></div>
 
 <nav class="nav">
@@ -167,11 +188,18 @@
         <h4>Lake Country Market Reports</h4>
         <p>Monthly market updates, new listings, and recent sales delivered to your inbox. No spam. Unsubscribe anytime.</p>
       </div>
-      <form class="newsletter-form" onsubmit="return false;">
-        <input type="email" placeholder="you@email.com" required />
-        <button type="submit">Subscribe</button>
-        <div class="newsletter-status"></div>
-      </form>
+      <form class="newsletter-form"
+      name="newsletter-signup"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      onsubmit="return handleNewsletterSubmit(event, this)">
+  <input type="hidden" name="form-name" value="newsletter-signup" />
+  <p style="display:none"><label>Don't fill this out if you're human: <input name="bot-field" /></label></p>
+  <input type="email" name="email" placeholder="you@email.com" required />
+  <button type="submit">Subscribe</button>
+  <div class="newsletter-status"></div>
+</form>
     </div>
     <div class="footer-bottom">
       <span>© 2026 The Sue Patti Group  |  thesuepattigroup.ai</span>
