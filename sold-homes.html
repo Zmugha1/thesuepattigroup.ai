@@ -48,28 +48,7 @@
 }
 </script>
 
-<!-- AgentPulse Attribution Module - must load before gtag -->
-<script src="js/analytics.js"></script>
-<!-- Google Analytics 4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WBWHJYPG12"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-WBWHJYPG12', {
-    'send_page_view': true,
-    'cookie_flags': 'SameSite=None;Secure'
-  });
-  
-  // Custom event tracking for AgentPulse lead capture
-  window.trackLeadEvent = function(eventName, params) {
-    if (typeof gtag === 'function') {
-      gtag('event', eventName, params || {});
-    }
-  };
-</script>
-<!-- End Google Analytics 4 -->
-
+<script src="/js/analytics.js"></script>
 
 <style>
   .stats-hero { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 40px 0; }

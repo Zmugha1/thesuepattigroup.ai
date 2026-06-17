@@ -1,83 +1,19 @@
 /* The Sue Patti Group | Chatbot
    Captures leads and emits structured events for AgentPulse dashboard */
 
-/* === AgentPulse Attribution Layer ===
-   Captures referrer, UTM params, and persistent session ID on first page load.
-   Stored in localStorage so return visits link to the same session.
-   Phase 2 dashboard reads from agentpulse_session for source attribution. */
-(function initAttribution() {
-  try {
-    let session = JSON.parse(localStorage.getItem('agentpulse_session') || 'null');
-
-    if (!session) {
-      // First visit - capture full attribution context
-      const referrer = document.referrer || '';
-      const params = new URLSearchParams(window.location.search);
-
-      // Classify source from referrer
-      let sourceCategory = 'Direct';
-      let sourceDetail = '';
-      if (referrer) {
-        const r = referrer.toLowerCase();
-        if (r.includes('chat.openai.com') || r.includes('chatgpt.com')) sourceCategory = 'ChatGPT';
-        else if (r.includes('perplexity.ai')) sourceCategory = 'Perplexity';
-        else if (r.includes('claude.ai')) sourceCategory = 'Claude';
-        else if (r.includes('gemini.google.com') || r.includes('bard.google.com')) sourceCategory = 'Gemini';
-        else if (r.includes('google.')) sourceCategory = 'Google';
-        else if (r.includes('bing.com')) sourceCategory = 'Bing';
-        else if (r.includes('duckduckgo.com')) sourceCategory = 'DuckDuckGo';
-        else if (r.includes('facebook.com') || r.includes('fb.com')) sourceCategory = 'Facebook';
-        else if (r.includes('linkedin.com')) sourceCategory = 'LinkedIn';
-        else if (r.includes('instagram.com')) sourceCategory = 'Instagram';
-        else if (r.includes('zillow.com')) sourceCategory = 'Zillow';
-        else if (r.includes('realtor.com')) sourceCategory = 'Realtor.com';
-        else if (r.includes('redfin.com')) sourceCategory = 'Redfin';
-        else { sourceCategory = 'Referral'; sourceDetail = referrer; }
-      }
-
-      // UTM override - if utm_source present, that wins
-      const utmSource = params.get('utm_source');
-      const utmMedium = params.get('utm_medium');
-      const utmCampaign = params.get('utm_campaign');
-      const utmTerm = params.get('utm_term');
-      const utmContent = params.get('utm_content');
-
-      session = {
-        sessionId: 'sess-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8),
-        firstSeenAt: new Date().toISOString(),
-        firstLandingPage: window.location.pathname,
-        referrer: referrer,
-        sourceCategory: sourceCategory,
-        sourceDetail: sourceDetail,
-        utmSource: utmSource,
-        utmMedium: utmMedium,
-        utmCampaign: utmCampaign,
-        utmTerm: utmTerm,
-        utmContent: utmContent,
-        userAgent: navigator.userAgent,
-        screenWidth: window.screen.width,
-        language: navigator.language,
-        pageViewCount: 0
-      };
-
-      localStorage.setItem('agentpulse_session', JSON.stringify(session));
-    }
-
-    // Increment page view count on every load
-    session.pageViewCount = (session.pageViewCount || 0) + 1;
-    session.lastSeenAt = new Date().toISOString();
-    localStorage.setItem('agentpulse_session', JSON.stringify(session));
-  } catch (e) {
-    // localStorage unavailable - silent fail, chatbot still works
-  }
-})();
-
 function getAttribution() {
-  try {
-    return JSON.parse(localStorage.getItem('agentpulse_session') || 'null');
-  } catch (e) {
-    return null;
+  if (typeof window.buildLeadAttribution === 'function') {
+    return window.buildLeadAttribution();
   }
+  return {
+    session_id: null,
+    referrer: 'direct',
+    referrer_domain: '',
+    utm_source: '',
+    utm_medium: '',
+    utm_campaign: '',
+    landing_page: window.location.pathname,
+  };
 }
 
 const QUESTIONS = [
@@ -190,7 +126,7 @@ function saveAndShowMatches() {
 
   const lead = {
     id: 'web-' + Date.now(),
-    sessionId: attribution ? attribution.sessionId : null,
+    sessionId: attribution.session_id || null,
     lead_type: 'buyer',
     capture_source: 'chatbot',
     name: answers.name,
@@ -204,14 +140,14 @@ function saveAndShowMatches() {
     days: 0,
     score: score,
     status: status,
-    source: attribution ? attribution.sourceCategory : 'Website Chatbot',
-    sourceDetail: attribution ? attribution.sourceDetail : '',
-    referrer: attribution ? attribution.referrer : '',
-    utmSource: attribution ? attribution.utmSource : null,
-    utmMedium: attribution ? attribution.utmMedium : null,
-    utmCampaign: attribution ? attribution.utmCampaign : null,
-    landingPage: attribution ? attribution.firstLandingPage : window.location.pathname,
-    pageViewsBeforeCapture: attribution ? attribution.pageViewCount : 1,
+    source: attribution.referrer_domain || 'direct',
+    sourceDetail: attribution.referrer || '',
+    referrer: attribution.referrer === 'direct' ? '' : attribution.referrer,
+    utmSource: attribution.utm_source || null,
+    utmMedium: attribution.utm_medium || null,
+    utmCampaign: attribution.utm_campaign || null,
+    landingPage: attribution.landing_page || window.location.pathname,
+    pageViewsBeforeCapture: 1,
     property: 'Matched: ' + answers.area,
     note: 'Captured via thesuepattigroup.ai chatbot. Timeline: ' + answers.timeline + '. Pre-approved: ' + answers.preApproved + '.',
     timestamp: new Date().toISOString()
@@ -310,8 +246,8 @@ function emitEvent(type, data) {
     events.unshift({
       type: type,
       data: data,
-      sessionId: attribution ? attribution.sessionId : null,
-      source: attribution ? attribution.sourceCategory : 'Direct',
+      sessionId: attribution.session_id || null,
+      source: attribution.referrer_domain || 'direct',
       timestamp: new Date().toISOString(),
       page: window.location.pathname
     });
@@ -371,18 +307,9 @@ window.handleNewsletterSubmit = function(event, form) {
       email: email,
       timestamp: new Date().toISOString(),
       page: window.location.pathname,
-      attribution: (function() {
-        try {
-          var ref = document.referrer || '';
-          var src = 'direct';
-          if (ref) {
-            var host = (new URL(ref)).hostname.replace('www.', '');
-            if (host.indexOf('google.') > -1) src = 'Google';
-            else src = host;
-          }
-          return { source: src, landing_page: window.location.pathname, referrer: ref };
-        } catch (e) { return { source: 'unknown' }; }
-      })()
+      attribution: typeof window.buildLeadAttribution === 'function'
+        ? window.buildLeadAttribution()
+        : { landing_page: window.location.pathname }
     };
     try {
       var existing = JSON.parse(localStorage.getItem('agentpulse_leads') || '[]');
