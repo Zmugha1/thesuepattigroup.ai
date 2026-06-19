@@ -844,3 +844,199 @@ a:hover { text-decoration: underline; }
   .stats-bar .container { grid-template-columns: repeat(2, 1fr); }
   .sb-num { font-size: 28px; }
 }
+
+/* Coming Soon Section - Jason Patti June 2026 Listings */
+.coming-soon-section {
+  background: linear-gradient(135deg, #F0EDE8 0%, #FFFFFF 100%);
+  padding: 80px 24px;
+  border-top: 4px solid #F5C842;
+  border-bottom: 1px solid #DDD8D2;
+}
+.coming-soon-wrap {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+.coming-soon-eyebrow {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: #E8604A;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 12px;
+}
+.coming-soon-headline {
+  font-family: 'Trebuchet MS', sans-serif;
+  font-size: 36px;
+  color: #2D3E50;
+  text-align: center;
+  margin: 0 0 12px 0;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.coming-soon-sub {
+  font-family: Calibri, sans-serif;
+  font-size: 18px;
+  color: #5A6A7A;
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 48px auto;
+  line-height: 1.5;
+}
+.coming-soon-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+@media (max-width: 900px) {
+  .coming-soon-grid { grid-template-columns: 1fr; }
+}
+.cs-card {
+  background: #FFFFFF;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(45,62,80,0.10);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.cs-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(45,62,80,0.18);
+}
+.cs-card-featured {
+  border: 2px solid #F5C842;
+}
+.cs-card-badge {
+  background: #2D3E50;
+  color: #FFFFFF;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  padding: 10px 16px;
+  text-align: center;
+  font-weight: bold;
+}
+.cs-badge-feature {
+  background: #F5C842;
+  color: #2D3E50;
+}
+.cs-card-photo {
+  width: 100%;
+  height: 320px;
+  overflow: hidden;
+  background: #F0EDE8;
+}
+.cs-card-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.cs-card-body {
+  padding: 28px 28px 32px 28px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.cs-card-price {
+  font-family: 'Trebuchet MS', sans-serif;
+  font-size: 36px;
+  color: #3ABFBF;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.cs-card-address {
+  font-family: Calibri, sans-serif;
+  font-size: 17px;
+  color: #2D3E50;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.cs-card-tagline {
+  font-family: 'Trebuchet MS', sans-serif;
+  font-style: italic;
+  color: #E8604A;
+  font-size: 14px;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+.cs-card-specs {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding: 16px 0;
+  border-top: 1px solid #DDD8D2;
+  border-bottom: 1px solid #DDD8D2;
+  margin-bottom: 18px;
+}
+.cs-card-specs span {
+  font-family: Calibri, sans-serif;
+  font-size: 14px;
+  color: #5A6A7A;
+}
+.cs-card-specs strong {
+  color: #2D3E50;
+  font-weight: 700;
+  font-size: 16px;
+}
+.cs-card-desc {
+  font-family: Calibri, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #3A3A3A;
+  margin-bottom: 18px;
+  flex: 1;
+}
+.cs-card-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+.cs-feature {
+  background: #F0EDE8;
+  color: #2D3E50;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+}
+.cs-card-cta {
+  background: #3ABFBF;
+  color: #FFFFFF;
+  font-family: 'Trebuchet MS', sans-serif;
+  font-weight: bold;
+  font-size: 15px;
+  text-align: center;
+  padding: 14px 24px;
+  border-radius: 4px;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: background 0.2s ease;
+}
+.cs-card-cta:hover {
+  background: #2D3E50;
+}
+.cs-card-cta-feature {
+  background: #F5C842;
+  color: #2D3E50;
+}
+.cs-card-cta-feature:hover {
+  background: #2D3E50;
+  color: #FFFFFF;
+}
+.coming-soon-footer {
+  font-family: Calibri, sans-serif;
+  font-size: 13px;
+  color: #5A6A7A;
+  text-align: center;
+  line-height: 1.6;
+  padding-top: 16px;
+  border-top: 1px solid #DDD8D2;
+}
+/* END Coming Soon */
