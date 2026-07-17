@@ -10,6 +10,13 @@
     return "Now Available";
   }
 
+  function statusRank(status) {
+    if (status === "active") return 0;
+    if (status === "under_contract") return 1;
+    if (status === "sold") return 2;
+    return 3;
+  }
+
   function escapeHtml(str) {
     return String(str == null ? "" : str)
       .replace(/&/g, "&amp;")
@@ -19,9 +26,15 @@
   }
 
   function renderComingSoonCard(listing) {
+    var isSold = listing.status === "sold";
     var featuredClass = listing.featured ? " cs-card-featured" : "";
     var badgeClass = listing.featured ? " cs-badge-feature" : "";
     var ctaClass = listing.featured ? " cs-card-cta cs-card-cta-feature" : " cs-card-cta";
+    var cardStyle = isSold ? ' style="opacity:0.78;filter:grayscale(15%)"' : "";
+    var photoStyle = isSold ? ' style="position:relative"' : "";
+    var soldOverlay = isSold
+      ? '<div style="position:absolute;top:14px;left:14px;background:#E8604A;color:#FFFFFF;font-family:\'Courier New\',monospace;font-size:12px;font-weight:bold;letter-spacing:1.5px;padding:8px 12px;border-radius:3px;z-index:1">SOLD</div>'
+      : "";
     var specs = (listing.specs || [])
       .map(function (s) {
         return (
@@ -45,13 +58,18 @@
     return (
       '<article class="cs-card' +
       featuredClass +
-      '">' +
+      '"' +
+      cardStyle +
+      ">" +
       '<div class="cs-card-badge' +
       badgeClass +
       '">' +
-      escapeHtml(statusLabel(listing.status, listing.headline)) +
+      escapeHtml(listing.badge || statusLabel(listing.status, listing.headline)) +
       "</div>" +
-      '<div class="cs-card-photo">' +
+      '<div class="cs-card-photo"' +
+      photoStyle +
+      ">" +
+      soldOverlay +
       '<img src="' +
       escapeHtml(listing.image) +
       '" alt="' +
@@ -146,9 +164,13 @@
   }
 
   function forPage(page) {
-    return (window.LISTINGS || []).filter(function (l) {
-      return (l.showOn || []).indexOf(page) !== -1;
-    });
+    return (window.LISTINGS || [])
+      .filter(function (l) {
+        return (l.showOn || []).indexOf(page) !== -1;
+      })
+      .sort(function (a, b) {
+        return statusRank(a.status) - statusRank(b.status);
+      });
   }
 
   function mount() {
