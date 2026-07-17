@@ -111,30 +111,8 @@
 
     <h3 style="text-align:center;margin-bottom:24px;color:var(--slate);font-size:14px;text-transform:uppercase;letter-spacing:1.5px;font-family:'Trebuchet MS'">Currently Active</h3>
 
-    <div class="featured-listing">
-      <div class="featured-listing-grid">
-        <div class="featured-photo" style="background-image:url('https://photos.zillowstatic.com/fp/08ebb5f61e69cf522ee84c4ac183fe42-p_d.jpg');background-size:cover;background-position:center">
-          <span class="featured-badge">For Sale</span>
-        </div>
-        <div class="featured-body">
-          <div class="price">$764,900</div>
-          <div class="addr">760 Mill Pond Rd, Dousman, WI 53118</div>
-
-          <div class="specs">
-            <span><strong>5</strong><small>Bedrooms</small></span>
-            <span><strong>4</strong><small>Bathrooms</small></span>
-            <span><strong>Single</strong><small>Family Home</small></span>
-          </div>
-
-          <p style="font-size:14px;color:var(--slate);line-height:1.6;margin-bottom:20px">
-            Listed by The Sue Patti Group. Single-family home in Dousman, Waukesha County. 5 bedrooms, 4 bathrooms. Contact us for showings, full details, and to schedule a tour.
-          </p>
-
-          <a href="https://www.zillow.com/homedetails/760-Mill-Pond-Rd-Dousman-WI-53118/119551108_zpid/" target="_blank" rel="noopener" class="btn-cta">View Full Listing on Zillow →</a>
-          <a href="contact.html" class="btn-cta gold" style="margin-left:10px">Request Tour</a>
-        </div>
-      </div>
-    </div>
+    <!-- Featured listing rendered from src/data/listings.js — edit that file only -->
+    <div id="listings-featured"></div>
 
     <h3 style="text-align:center;margin:48px 0 24px;color:var(--slate);font-size:14px;text-transform:uppercase;letter-spacing:1.5px;font-family:'Trebuchet MS'">Search the Full MLS</h3>
 
@@ -191,5 +169,7 @@
 
 <script src="js/chatbot.js"></script>
 <script src="js/newsletter.js"></script>
+<script src="src/data/listings.js"></script>
+<script src="js/listings-render.js"></script>
 </body>
 </html>

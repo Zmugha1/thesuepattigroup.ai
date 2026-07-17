@@ -305,97 +305,8 @@
       available before public showings begin.
     </p>
 
-    <div class="coming-soon-grid">
-
-      <article class="cs-card">
-        <div class="cs-card-badge">SHOWINGS BEGIN JUNE 20</div>
-        <div class="cs-card-photo">
-          <img src="images/listings/alberta-dr.jpg"
-               alt="Updated Colonial home at twilight on 1.86 wooded acres,
-                    N6W31264 Alberta Drive, Delafield Wisconsin">
-        </div>
-        <div class="cs-card-body">
-          <div class="cs-card-price">$795,000</div>
-          <div class="cs-card-address">
-            N6W31264 Alberta Drive, Delafield
-          </div>
-          <div class="cs-card-specs">
-            <span><strong>3</strong> bd</span>
-            <span><strong>2.5</strong> ba</span>
-            <span><strong>3,721</strong> sqft</span>
-            <span><strong>1.86</strong> acres</span>
-          </div>
-          <p class="cs-card-desc">
-            Beautifully updated Colonial in Carlton Ridge. Spacious
-            primary suite with walk-in shower and soaking tub.
-            Walkout lower level with rec room and additional den.
-            2.5 car attached garage plus a 32x30 fully insulated
-            heated detached garage with finished upper level. Kettle
-            Moraine school district.
-          </p>
-          <div class="cs-card-features">
-            <span class="cs-feature">Hot Tub</span>
-            <span class="cs-feature">Cold Plunge</span>
-            <span class="cs-feature">Heated Detached Garage</span>
-            <span class="cs-feature">Kettle Moraine Schools</span>
-          </div>
-          <a href="contact.html?listing=alberta"
-             class="cs-card-cta">
-            Request Private Preview
-          </a>
-        </div>
-      </article>
-
-      <article class="cs-card cs-card-featured">
-        <div class="cs-card-badge cs-badge-feature">
-          SHOWINGS BEGIN JUNE 23  ·  ESTATE
-        </div>
-        <div class="cs-card-photo">
-          <img src="images/listings/stonebrook.jpg"
-               alt="Aerial view of the historic 1885 Stonebrook Estate
-                    farmstead, main stone house with red barn and
-                    guest house on 7.08 acres along Scuppernong Creek,
-                    Delafield Wisconsin">
-        </div>
-        <div class="cs-card-body">
-          <div class="cs-card-price">$2,200,000</div>
-          <div class="cs-card-address">
-            S16W32772 Highway 18, Delafield
-          </div>
-          <div class="cs-card-tagline">
-            The 1885 Stonebrook Estate
-          </div>
-          <div class="cs-card-specs">
-            <span><strong>5</strong> bd</span>
-            <span><strong>4.5</strong> ba</span>
-            <span><strong>5,750</strong> sqft</span>
-            <span><strong>7.08</strong> acres</span>
-          </div>
-          <p class="cs-card-desc">
-            Historic 1885 Stonebrook Estate Farmstead. Two distinct
-            residences on 7+ acres along Scuppernong Creek. Main
-            home features 5 bedrooms, 4 full plus 2 half baths, and
-            three natural fireplaces. Charming secondary home with
-            2 bedrooms. Premium outbuildings including barn with box
-            stalls, guest house, and pole building. Borders public
-            land. Ideal for family compound, private retreat, or
-            hosting venue.
-          </p>
-          <div class="cs-card-features">
-            <span class="cs-feature">Two Homes On Property</span>
-            <span class="cs-feature">Hobby Farm Approved</span>
-            <span class="cs-feature">Scuppernong Creek</span>
-            <span class="cs-feature">Borders Public Land</span>
-            <span class="cs-feature">Kettle Moraine Schools</span>
-          </div>
-          <a href="contact.html?listing=stonebrook"
-             class="cs-card-cta cs-card-cta-feature">
-            Request Private Preview
-          </a>
-        </div>
-      </article>
-
-    </div>
+    <!-- Listing cards rendered from src/data/listings.js — edit that file only -->
+    <div class="coming-soon-grid" id="listings-coming-soon"></div>
 
     <div class="coming-soon-footer">
       Listed by Jason Patti  ·  REALTOR®  ·  The Sue Patti Group
@@ -715,5 +626,7 @@
 
 <script src="js/chatbot.js"></script>
 <script src="js/newsletter.js"></script>
+<script src="src/data/listings.js"></script>
+<script src="js/listings-render.js"></script>
 </body>
 </html>
