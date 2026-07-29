@@ -9,16 +9,17 @@
 
 window.LISTINGS = [
   {
-    "id": "summit",
+    "id": "summit-waterville",
     "address": "1201 S Waterville Rd, Summit, WI 53066",
     "price": "$798,500",
     "status": "under_contract",
     "headline": "OFFER ACCEPTED",
-    "subheadline": "Congratulations to our clients.",
-    "cta": "Looking for your next home? Call Jason.",
+    "subheadline": "This home is under contract.",
+    "cta": "Looking to sell? Call Jason today.",
     "badge": "UNDER CONTRACT",
+    "closing_date": "",
     "image": "",
-    "ctaHref": "contact.html?listing=summit",
+    "ctaHref": "contact.html?listing=summit-waterville",
     "featured": false,
     "showOn": [
       "home"
