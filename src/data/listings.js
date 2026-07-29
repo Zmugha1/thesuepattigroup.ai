@@ -9,6 +9,22 @@
 
 window.LISTINGS = [
   {
+    "id": "summit",
+    "address": "1201 S Waterville Rd, Summit, WI 53066",
+    "price": "$798,500",
+    "status": "under_contract",
+    "headline": "OFFER ACCEPTED",
+    "subheadline": "Congratulations to our clients.",
+    "cta": "Looking for your next home? Call Jason.",
+    "badge": "UNDER CONTRACT",
+    "image": "",
+    "ctaHref": "contact.html?listing=summit",
+    "featured": false,
+    "showOn": [
+      "home"
+    ]
+  },
+  {
     "id": "alberta",
     "address": "N6W31264 Alberta Drive, Delafield",
     "price": "$795,000",
