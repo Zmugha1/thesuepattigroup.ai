@@ -54,6 +54,19 @@
     var tagline = listing.tagline
       ? '<div class="cs-card-tagline">' + escapeHtml(listing.tagline) + "</div>"
       : "";
+    var hasImage = !!(listing.image && String(listing.image).trim());
+    var photoBlock = hasImage
+      ? '<div class="cs-card-photo"' +
+        photoStyle +
+        ">" +
+        soldOverlay +
+        '<img src="' +
+        escapeHtml(listing.image) +
+        '" alt="' +
+        escapeHtml(listing.imageAlt || listing.address) +
+        '">' +
+        "</div>"
+      : "";
 
     return (
       '<article class="cs-card' +
@@ -66,16 +79,7 @@
       '">' +
       escapeHtml(listing.badge || statusLabel(listing.status, listing.headline)) +
       "</div>" +
-      '<div class="cs-card-photo"' +
-      photoStyle +
-      ">" +
-      soldOverlay +
-      '<img src="' +
-      escapeHtml(listing.image) +
-      '" alt="' +
-      escapeHtml(listing.imageAlt || listing.address) +
-      '">' +
-      "</div>" +
+      photoBlock +
       '<div class="cs-card-body">' +
       '<div class="cs-card-price">' +
       escapeHtml(listing.price) +
@@ -128,16 +132,21 @@
         "</a>";
     }
 
+    var hasImage = !!(listing.image && String(listing.image).trim());
+    var photoBlock = hasImage
+      ? '<div class="featured-photo" style="background-image:url(\'' +
+        escapeHtml(listing.image) +
+        "');background-size:cover;background-position:center\">" +
+        '<span class="featured-badge">' +
+        escapeHtml(statusLabel(listing.status, listing.headline)) +
+        "</span>" +
+        "</div>"
+      : "";
+
     return (
       '<div class="featured-listing">' +
       '<div class="featured-listing-grid">' +
-      '<div class="featured-photo" style="background-image:url(\'' +
-      escapeHtml(listing.image) +
-      "');background-size:cover;background-position:center\">" +
-      '<span class="featured-badge">' +
-      escapeHtml(statusLabel(listing.status, listing.headline)) +
-      "</span>" +
-      "</div>" +
+      photoBlock +
       '<div class="featured-body">' +
       '<div class="price">' +
       escapeHtml(listing.price) +
