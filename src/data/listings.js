@@ -18,7 +18,7 @@ window.LISTINGS = [
     "cta": "Looking to sell? Call Jason today.",
     "badge": "UNDER CONTRACT",
     "closing_date": "",
-    "image": "",
+    "image": "assets/images/listings/summit-waterville.jpg",
     "ctaHref": "contact.html?listing=summit-waterville",
     "featured": false,
     "showOn": [
